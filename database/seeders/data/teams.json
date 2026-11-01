@@ -1,0 +1,65 @@
+[
+    {
+        "id": "team-bm",
+        "code": "BM",
+        "name": "Regu Bina Marga (Jalan & Jembatan)",
+        "division": "Infrastruktur Jalan",
+        "leader": "Suryadi (Koordinator Jalan)",
+        "activeMembers": 6,
+        "status": "Bertugas",
+        "currentLocation": "Jl. Beringin RT 02 Dusun Beringin (Tambal Paving Cepat)",
+        "assignedTickets": [
+            "#LAP-0412",
+            "#LAP-0413",
+            "#LAP-0419"
+        ],
+        "vehicle": "Pick-Up L300 & Stamper Mesin"
+    },
+    {
+        "id": "team-ta",
+        "code": "TA",
+        "name": "Tim Tata Air & Irigasi Desa",
+        "division": "Pengairan & Drainase",
+        "leader": "Mansur Efendi",
+        "activeMembers": 5,
+        "status": "Bertugas",
+        "currentLocation": "Blok Sawah Tani (Normalisasi Tanggul Saluran Irigasi)",
+        "assignedTickets": [
+            "#LAP-0417",
+            "#LAP-0421"
+        ],
+        "vehicle": "Alkon Pompa 3 Inch & Gerobak Dorong"
+    },
+    {
+        "id": "team-pju",
+        "code": "PJU",
+        "name": "Regu Kelistrikan & PJU",
+        "division": "Penerangan Umum",
+        "leader": "Agus Salim",
+        "activeMembers": 4,
+        "status": "Siaga",
+        "currentLocation": "Bengkel Balai Desa Kepunduhan (Jl. Beringin No. 1)",
+        "assignedTickets": [
+            "#LAP-0418",
+            "#LAP-0420",
+            "#LAP-0423"
+        ],
+        "vehicle": "Mobil Tangga Hidrolik Mini"
+    },
+    {
+        "id": "team-kth",
+        "code": "KTH",
+        "name": "Satgas Kebersihan & Ruang Hijau",
+        "division": "Lingkungan Hidup",
+        "leader": "Teguh Wibowo",
+        "activeMembers": 8,
+        "status": "Bertugas",
+        "currentLocation": "Jalur Pantura Kramat & Kawasan Pasar Desa Kepunduhan",
+        "assignedTickets": [
+            "#LAP-0414",
+            "#LAP-0415",
+            "#LAP-0416"
+        ],
+        "vehicle": "Truk Dump Sampah & Chainsaw"
+    }
+]
