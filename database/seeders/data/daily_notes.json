@@ -1,0 +1,37 @@
+[
+    {
+        "id": "note-1",
+        "time": "08:00 WIB",
+        "author": "Budi Santoso (Sekdes Kepunduhan)",
+        "text": "Briefing pagi di Balai Desa (Jl. Beringin No. 1) bersama seluruh koordinator regu teknis lapangan. Prioritas penanganan hari ini fokus pada perbaikan jalan amblas di Dusun Beringin dan normalisasi irigasi sawah warga jelang musim hujan.",
+        "createdAt": "2026-10-31 08:00:00"
+    },
+    {
+        "id": "note-2",
+        "time": "10:15 WIB",
+        "author": "Aiptu Bambang Wijaya (Bhabinkamtibmas)",
+        "text": "Patroli sinergitas bersama Babinsa Koramil 06 Kramat di area jalur Pantura Kramat dan Pasar Desa. Situasi kamtibmas kondusif, arus lalu lintas lancar.",
+        "createdAt": "2026-10-31 10:15:00"
+    },
+    {
+        "id": "note-3",
+        "time": "11:30 WIB",
+        "author": "Mansur Efendi (Tim Irigasi)",
+        "text": "Pembersihan endapan sedimentasi dan tumpukan eceng gondok di pintu air Blok Sawah Tani bagian selatan telah selesai. Debit air kembali mengalir lancar menuju sawah warga.",
+        "createdAt": "2026-10-31 11:30:00"
+    },
+    {
+        "id": "note-4",
+        "time": "13:45 WIB",
+        "author": "Agus Salim (Regu PJU)",
+        "text": "Penggantian 3 titik lampu penerangan jalan umum di Jl. Melati Dusun Kepunduhan Timur telah rampung. Seluruh instalasi bohlam LED 50W berfungsi normal.",
+        "createdAt": "2026-10-31 13:45:00"
+    },
+    {
+        "id": "note-5",
+        "time": "15:20 WIB",
+        "author": "Teguh Wibowo (Satgas Kebersihan)",
+        "text": "Pengangkutan sampah di TPS Pasar Desa Kepunduhan menuju TPA telah selesai menggunakan truk dump desa. Dilanjutkan perapian ranting pohon di Jl. Beringin barat.",
+        "createdAt": "2026-10-31 15:20:00"
+    }
+]

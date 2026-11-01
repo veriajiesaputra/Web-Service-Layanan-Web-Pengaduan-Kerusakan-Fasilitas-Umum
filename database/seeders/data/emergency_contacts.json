@@ -1,0 +1,57 @@
+[
+    {
+        "id": "contact-1",
+        "title": "Posko Siaga Bencana Desa Kepunduhan",
+        "name": "Posko Siaga Bencana Desa Kepunduhan",
+        "phone": "0812-3456-7890",
+        "desc": "Satgas penanggulangan banjir, tanggul jebol, pohon tumbang Jl. Beringin",
+        "role": "Satgas Bencana Desa",
+        "icon": "phone_in_talk",
+        "badge": "24 Jam",
+        "available": "24 Jam"
+    },
+    {
+        "id": "contact-2",
+        "title": "Bhabinkamtibmas Polsek Kramat",
+        "name": "Bhabinkamtibmas Polsek Kramat",
+        "phone": "0812-3456-7890",
+        "desc": "Aiptu Bambang Wijaya - Kamtibmas Desa Kepunduhan",
+        "role": "Polri (Polsek Kramat)",
+        "icon": "shield_person",
+        "badge": "Polri",
+        "available": "Polri"
+    },
+    {
+        "id": "contact-3",
+        "title": "Babinsa Koramil 06 Kramat",
+        "name": "Babinsa Koramil 06 Kramat",
+        "phone": "0813-9876-5432",
+        "desc": "Serma Hendra Kusuma - Pembina teritorial Desa Kepunduhan",
+        "role": "TNI-AD (Koramil Kramat)",
+        "icon": "military_tech",
+        "badge": "TNI-AD",
+        "available": "TNI-AD"
+    },
+    {
+        "id": "contact-4",
+        "title": "Ambulans Siaga Desa Kepunduhan",
+        "name": "Ambulans Siaga Desa Kepunduhan",
+        "phone": "(0283) 555-0199",
+        "desc": "Layanan antar pasien darurat 24 jam gratis warga Kepunduhan",
+        "role": "Layanan Medis Darurat",
+        "icon": "emergency",
+        "badge": "Kesehatan",
+        "available": "24 Jam"
+    },
+    {
+        "id": "contact-5",
+        "title": "PLN Rayon Kramat Tegal",
+        "name": "PLN Rayon Kramat Tegal",
+        "phone": "123",
+        "desc": "Layanan aduan kabel putus dan gangguan listrik wilayah Kramat",
+        "role": "BUMN Kelistrikan",
+        "icon": "bolt",
+        "badge": "Kelistrikan",
+        "available": "24 Jam"
+    }
+]
