@@ -1,0 +1,584 @@
+[
+    {
+        "id": "#LAP-0412",
+        "title": "Jalan Paving Berlubang dan Amblas Depan SDN Kepunduhan",
+        "category": "jalan",
+        "categoryLabel": "Jalan & Jembatan",
+        "categoryIcon": "add_road",
+        "status": "Proses",
+        "location": "Jl. Beringin RT 02 / RW 01 (Depan SDN Kepunduhan)",
+        "dusun": "Dusun Beringin (Krajan)",
+        "description": "Paving jalan desa amblas dengan diameter sekitar 1 meter dan kedalaman 15 cm akibat sering dilalui truk pengangkut material, membahayakan anak-anak sekolah yang melintas.",
+        "timeAgo": "2 jam lalu",
+        "createdAt": "2026-10-31 08:30",
+        "priority": "Tinggi",
+        "officerBadge": "Ditangani: Regu BM",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8795,
+            "lng": 109.1832,
+            "xPercent": 48,
+            "yPercent": 50
+        },
+        "reporterName": "Siti Rahmawati",
+        "reporterRole": "Warga Dusun Beringin",
+        "reporterPhone": "0812-3456-7890",
+        "reporterNik": "3328012005010001",
+        "isAnonymous": false,
+        "upvotes": 24,
+        "hasUpvoted": true,
+        "assignedTeam": "Regu Bina Marga (Jalan & Jembatan)",
+        "notes": "Paving pengganti dan pasir uruk telah disiapkan dari bengkel balai desa.",
+        "timeline": [
+            {
+                "title": "Laporan Dikirimkan Warga",
+                "time": "31 Oct 2026, 08:30 WIB",
+                "description": "Laporan masuk antrean verifikasi balai desa.",
+                "actor": "Siti Rahmawati",
+                "isCompleted": true
+            },
+            {
+                "title": "Verifikasi Kaur Pelayanan Desa",
+                "time": "31 Oct 2026, 09:10 WIB",
+                "description": "Lokasi telah dicek dan masuk prioritas tinggi karena dekat fasilitas pendidikan.",
+                "actor": "Kaur Pelayanan Desa",
+                "isCompleted": true
+            },
+            {
+                "title": "Disposisi ke Regu Bina Marga",
+                "time": "31 Oct 2026, 10:00 WIB",
+                "description": "Regu BM meluncur dengan Pick-Up L300 dan mesin stamper paving.",
+                "actor": "Suryadi (Koordinator BM)",
+                "isCompleted": true
+            }
+        ],
+        "photos": [
+            "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=80"
+        ],
+        "comments": [
+            {
+                "id": "c_001_1",
+                "author": "Budi Santoso",
+                "role": "Warga Jl. Beringin No. 1",
+                "text": "Terima kasih respon cepatnya tim desa. Anak-anak memang rawan jatuh kalau lewat pagi hari.",
+                "time": "1 jam lalu",
+                "createdAt": "2026-10-31 09:40:00"
+            }
+        ]
+    },
+    {
+        "id": "#LAP-0413",
+        "title": "Kerusakan Plat Dekker Jembatan Penghubung Dusun Barat",
+        "category": "jalan",
+        "categoryLabel": "Jalan & Jembatan",
+        "categoryIcon": "add_road",
+        "status": "Proses",
+        "location": "Jembatan Saluran Dusun Kepunduhan Barat RT 03 / RW 03",
+        "dusun": "Dusun Kepunduhan Barat",
+        "description": "Besi tulangan plat cor jembatan penghubung antar-RT sudah mulai keropos dan retak melintang setelah dilewati kendaraan berat panen raya.",
+        "timeAgo": "4 jam lalu",
+        "createdAt": "2026-10-31 06:45",
+        "priority": "Tinggi",
+        "officerBadge": "Ditangani: Regu BM",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8812,
+            "lng": 109.1818,
+            "xPercent": 35,
+            "yPercent": 62
+        },
+        "reporterName": "H. Slamet Riyadi",
+        "reporterRole": "Tokoh Masyarakat Kepunduhan",
+        "reporterPhone": "0819-3344-5566",
+        "reporterNik": "3328012005010006",
+        "isAnonymous": false,
+        "upvotes": 31,
+        "hasUpvoted": false,
+        "assignedTeam": "Regu Bina Marga (Jalan & Jembatan)",
+        "notes": "Pemasangan rambu peringatan tonase maksimal 2 ton sudah dipasang sementara.",
+        "timeline": [
+            {
+                "title": "Laporan Dikirimkan Warga",
+                "time": "31 Oct 2026, 06:45 WIB",
+                "description": "Laporan masuk sistem verifikasi desa.",
+                "actor": "H. Slamet Riyadi",
+                "isCompleted": true
+            },
+            {
+                "title": "Tinjauan Lokasi Bersama Babinsa",
+                "time": "31 Oct 2026, 07:30 WIB",
+                "description": "Pengukuran bentang kerusakan plat dekker jembatan 3x4 meter.",
+                "actor": "Serma Hendra (Babinsa Koramil Kramat)",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0417",
+        "title": "Tanggul Saluran Irigasi Jebol di Blok Sawah Tani",
+        "category": "irigasi",
+        "categoryLabel": "Saluran Air & Irigasi",
+        "categoryIcon": "water_damage",
+        "status": "Proses",
+        "location": "Saluran Sekunder Blok Sawah Tani RT 01 / RW 03",
+        "dusun": "Blok Sawah Tani",
+        "description": "Tanggul pembatas saluran irigasi sawah jebol sepanjang 5 meter akibat luapan debit air hujan lebat semalam. Air menggenangi persemaian bibit padi.",
+        "timeAgo": "5 jam lalu",
+        "createdAt": "2026-10-31 06:10",
+        "priority": "Tinggi",
+        "officerBadge": "Ditangani: Tim TA",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8825,
+            "lng": 109.1852,
+            "xPercent": 60,
+            "yPercent": 75
+        },
+        "reporterName": "Bambang Sutrisno",
+        "reporterRole": "Ketua Kelompok Tani Kepunduhan",
+        "reporterPhone": "0857-1122-3344",
+        "reporterNik": "3328012005010003",
+        "isAnonymous": false,
+        "upvotes": 42,
+        "hasUpvoted": true,
+        "assignedTeam": "Tim Tata Air & Irigasi Desa",
+        "notes": "Karung pasir sebanyak 150 buah dan bambu dolken telah dimobilisasi ke lokasi.",
+        "timeline": [
+            {
+                "title": "Laporan Diterima",
+                "time": "31 Oct 2026, 06:10 WIB",
+                "description": "Laporan darurat kelompok tani Desa Kepunduhan diterima.",
+                "actor": "Bambang Sutrisno",
+                "isCompleted": true
+            },
+            {
+                "title": "Pengalihan Pintu Air & Pemasangan Bronjong",
+                "time": "31 Oct 2026, 07:00 WIB",
+                "description": "Tim Tata Air menurunkan pompa Alkon dan gotong royong bersama petani memasang cerucuk bambu.",
+                "actor": "Mansur Efendi",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": [
+            {
+                "id": "c_017_1",
+                "author": "Mansur Efendi",
+                "role": "Koordinator Tim Tata Air",
+                "text": "Sedang penutupan darurat dengan sandbag. Debit air utama di intake barat sudah kami kecilkan sementara.",
+                "time": "3 jam lalu",
+                "createdAt": "2026-10-31 07:45:00"
+            }
+        ]
+    },
+    {
+        "id": "#LAP-0418",
+        "title": "Lampu PJU Mati Total di Pertigaan Dusun Kepunduhan Timur",
+        "category": "penerangan",
+        "categoryLabel": "Penerangan Jalan",
+        "categoryIcon": "light",
+        "status": "Proses",
+        "location": "Pertigaan Gardu Dusun Kepunduhan Timur RT 05 / RW 02",
+        "dusun": "Dusun Kepunduhan Timur",
+        "description": "Tiga unit lampu penerangan jalan mati sejak 2 malam terakhir. Kondisi jalan menjadi gelap gulita dan rawan kecelakaan serta aksi kriminalitas malam.",
+        "timeAgo": "6 jam lalu",
+        "createdAt": "2026-10-31 05:20",
+        "priority": "Sedang",
+        "officerBadge": "Ditangani: Regu PJU",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8788,
+            "lng": 109.1848,
+            "xPercent": 58,
+            "yPercent": 38
+        },
+        "reporterName": "Ahmad Fauzi",
+        "reporterRole": "Warga Kepunduhan Timur",
+        "reporterPhone": "0821-9876-5432",
+        "reporterNik": "3328012005010002",
+        "isAnonymous": false,
+        "upvotes": 18,
+        "hasUpvoted": false,
+        "assignedTeam": "Regu Kelistrikan & PJU",
+        "notes": "Pengecekan sekring panel otomatis di trafo gardu oleh regu PJU.",
+        "timeline": [
+            {
+                "title": "Laporan Diterima",
+                "time": "31 Oct 2026, 05:20 WIB",
+                "description": "Laporan masuk verifikasi teknis kelistrikan.",
+                "actor": "Ahmad Fauzi",
+                "isCompleted": true
+            },
+            {
+                "title": "Jadwal Penggantian Bohlam LED",
+                "time": "31 Oct 2026, 08:00 WIB",
+                "description": "Mobil tangga hidrolik mini dijadwalkan ke lokasi sore ini.",
+                "actor": "Agus Salim",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0414",
+        "title": "Dahan Pohon Trembesi Rindang Menjuntai di Jalur Pantura Kramat",
+        "category": "taman",
+        "categoryLabel": "Taman & Pohon",
+        "categoryIcon": "park",
+        "status": "Proses",
+        "location": "Jalur Utama Pantura Kramat KM 12 (Perbatasan Desa Kepunduhan)",
+        "dusun": "Wilayah Jalur Pantura Kramat",
+        "description": "Dahan pohon pelindung trembesi sudah lapuk dan menjulur rendah ke badan jalan nasional Pantura, rawan tersangkut atap bus dan truk tronton.",
+        "timeAgo": "1 hari lalu",
+        "createdAt": "2026-10-30 14:15",
+        "priority": "Tinggi",
+        "officerBadge": "Ditangani: Satgas KTH",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8775,
+            "lng": 109.1825,
+            "xPercent": 45,
+            "yPercent": 22
+        },
+        "reporterName": "Kusnandar",
+        "reporterRole": "Warga Perlintasan Pantura",
+        "reporterPhone": "0877-6655-4433",
+        "reporterNik": "3328012005010008",
+        "isAnonymous": false,
+        "upvotes": 35,
+        "hasUpvoted": true,
+        "assignedTeam": "Satgas Kebersihan & Ruang Hijau",
+        "notes": "Koordinasi dengan Satlantas Polsek Kramat untuk pengaturan lalu lintas saat pemangkasan pohon.",
+        "timeline": [
+            {
+                "title": "Laporan Diterima",
+                "time": "30 Oct 2026, 14:15 WIB",
+                "description": "Laporan diverifikasi tim lingkungan hidup.",
+                "actor": "Kusnandar",
+                "isCompleted": true
+            },
+            {
+                "title": "Eksekusi Pemangkasan Dahan",
+                "time": "31 Oct 2026, 09:30 WIB",
+                "description": "Satgas KTH memangkas dahan pohon menggunakan chainsaw dan mengamankan bahu jalan.",
+                "actor": "Teguh Wibowo",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0415",
+        "title": "Penumpukan Sampah Organik dan Plastik di Belakang Pasar Desa",
+        "category": "kebersihan",
+        "categoryLabel": "Kebersihan & Sampah",
+        "categoryIcon": "delete_sweep",
+        "status": "Selesai",
+        "location": "Area TPS Pasar Desa Kepunduhan RT 02 / RW 01",
+        "dusun": "Kawasan Usaha & Pasar Desa",
+        "description": "Sampah sisa sayuran dan limbah pedagang menumpuk dan menimbulkan bau tak sedap pasca hari pasaran wage.",
+        "timeAgo": "1 hari lalu",
+        "createdAt": "2026-10-30 10:00",
+        "priority": "Sedang",
+        "officerBadge": "Selesai: Satgas KTH",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8805,
+            "lng": 109.1842,
+            "xPercent": 52,
+            "yPercent": 56
+        },
+        "reporterName": "Rina Anggraini",
+        "reporterRole": "Pelaku UMKM Desa Kepunduhan",
+        "reporterPhone": "0813-8899-7700",
+        "reporterNik": "3328012005010004",
+        "isAnonymous": false,
+        "upvotes": 29,
+        "hasUpvoted": true,
+        "assignedTeam": "Satgas Kebersihan & Ruang Hijau",
+        "notes": "Truk dump desa telah mengangkut 2 ritase sampah menuju TPA Penujah.",
+        "timeline": [
+            {
+                "title": "Laporan Masuk",
+                "time": "30 Oct 2026, 10:00 WIB",
+                "description": "Laporan pengaduan sampah pedagang pasar diterima.",
+                "actor": "Rina Anggraini",
+                "isCompleted": true
+            },
+            {
+                "title": "Pengangkutan Sampah Tuntas",
+                "time": "30 Oct 2026, 15:45 WIB",
+                "description": "TPS pasar telah dibersihkan dan disemprot disinfektan.",
+                "actor": "Teguh Wibowo",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": [
+            {
+                "id": "c_015_1",
+                "author": "Rina Anggraini",
+                "role": "Pelaku UMKM",
+                "text": "Alhamdulillah pasar sudah bersih dan tidak bau lagi. Terima kasih tim kebersihan!",
+                "time": "Kemarin sore",
+                "createdAt": "2026-10-30 16:30:00"
+            }
+        ]
+    },
+    {
+        "id": "#LAP-0416",
+        "title": "Saluran Drainase Pasar Desa Tersumbat Limbah Plastik",
+        "category": "kebersihan",
+        "categoryLabel": "Kebersihan & Sampah",
+        "categoryIcon": "delete_sweep",
+        "status": "Proses",
+        "location": "Drainase Utama Kios Pasar Desa Kepunduhan",
+        "dusun": "Kawasan Usaha & Pasar Desa",
+        "description": "Got depan deretan kios tersumbat botol dan kantong plastik membuat air cucian meluap ke lorong kios pasar.",
+        "timeAgo": "8 jam lalu",
+        "createdAt": "2026-10-31 03:00",
+        "priority": "Sedang",
+        "officerBadge": "Ditangani: Satgas KTH",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8808,
+            "lng": 109.1840,
+            "xPercent": 50,
+            "yPercent": 58
+        },
+        "reporterName": "Rina Anggraini",
+        "reporterRole": "Pelaku UMKM Desa Kepunduhan",
+        "reporterPhone": "0813-8899-7700",
+        "reporterNik": "3328012005010004",
+        "isAnonymous": false,
+        "upvotes": 15,
+        "hasUpvoted": false,
+        "assignedTeam": "Satgas Kebersihan & Ruang Hijau",
+        "notes": "Pembersihan manual got pasar sedang berlangsung bersama para pedagang.",
+        "timeline": [
+            {
+                "title": "Laporan Diterima",
+                "time": "31 Oct 2026, 03:00 WIB",
+                "description": "Laporan drainase tersumbat masuk ke sistem.",
+                "actor": "Rina Anggraini",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0419",
+        "title": "Pengaspalan Ulang Gang Masjid Al-Hidayah Dusun Beringin",
+        "category": "jalan",
+        "categoryLabel": "Jalan & Jembatan",
+        "categoryIcon": "add_road",
+        "status": "Selesai",
+        "location": "Gang Masjid Al-Hidayah, Dusun Beringin RT 01 / RW 01",
+        "dusun": "Dusun Beringin (Krajan)",
+        "description": "Permukaan aspal gang menuju masjid kampung sudah mengelupas parah, menimbulkan kubangan air saat hujan.",
+        "timeAgo": "2 hari lalu",
+        "createdAt": "2026-10-29 09:00",
+        "priority": "Sedang",
+        "officerBadge": "Selesai: Regu BM",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8792,
+            "lng": 109.1828,
+            "xPercent": 46,
+            "yPercent": 48
+        },
+        "reporterName": "Budi Santoso",
+        "reporterRole": "Warga Jl. Beringin No. 1",
+        "reporterPhone": "0812-1111-2222",
+        "reporterNik": "3328012005010005",
+        "isAnonymous": false,
+        "upvotes": 39,
+        "hasUpvoted": true,
+        "assignedTeam": "Regu Bina Marga (Jalan & Jembatan)",
+        "notes": "Pekerjaan aspal dingin tuntas sepanjang 120 meter.",
+        "timeline": [
+            {
+                "title": "Laporan Selesai Dikerjakan",
+                "time": "30 Oct 2026, 16:00 WIB",
+                "description": "Pengaspalan selesai dan sudah dapat dilalui kendaraan jamaah dengan aman.",
+                "actor": "Suryadi (Koordinator BM)",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0420",
+        "title": "Tiang PJU Miring di Tepi Jalur Pantura Kramat",
+        "category": "penerangan",
+        "categoryLabel": "Penerangan Jalan",
+        "categoryIcon": "light",
+        "status": "Diajukan",
+        "location": "Bahu Jalan Pantura Depan Gang Makam Kramat",
+        "dusun": "Wilayah Jalur Pantura Kramat",
+        "description": "Tiang besi lampu penerangan jalan miring ke arah badan jalan sekitar 20 derajat, rawan roboh jika tertiup angin kencang.",
+        "timeAgo": "1 jam lalu",
+        "createdAt": "2026-10-31 09:30",
+        "priority": "Tinggi",
+        "officerBadge": "Prioritas: Tinggi",
+        "officerBadgeType": "priority",
+        "coordinates": {
+            "lat": -6.8778,
+            "lng": 109.1838,
+            "xPercent": 54,
+            "yPercent": 25
+        },
+        "reporterName": "Kusnandar",
+        "reporterRole": "Warga Perlintasan Pantura",
+        "reporterPhone": "0877-6655-4433",
+        "reporterNik": "3328012005010008",
+        "isAnonymous": false,
+        "upvotes": 12,
+        "hasUpvoted": false,
+        "assignedTeam": "Regu Kelistrikan & PJU",
+        "notes": null,
+        "timeline": [
+            {
+                "title": "Laporan Diajukan",
+                "time": "31 Oct 2026, 09:30 WIB",
+                "description": "Laporan masuk antrean verifikasi perangkat desa.",
+                "actor": "Kusnandar",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0421",
+        "title": "Pintu Air Sekunder Rusak Pengatur Debit di Blok Sawah Tani Utara",
+        "category": "irigasi",
+        "categoryLabel": "Saluran Air & Irigasi",
+        "categoryIcon": "water_damage",
+        "status": "Ditinjau",
+        "location": "Pintu Air Sekunder No. 2, Blok Sawah Tani",
+        "dusun": "Blok Sawah Tani",
+        "description": "Ulir besi pemutar pintu air berkarat dan macet sehingga debit air tidak dapat diatur dengan baik ke petak sawah petani RW 03.",
+        "timeAgo": "3 jam lalu",
+        "createdAt": "2026-10-31 07:15",
+        "priority": "Sedang",
+        "officerBadge": "Status: Ditinjau",
+        "officerBadgeType": "priority",
+        "coordinates": {
+            "lat": -6.8830,
+            "lng": 109.1860,
+            "xPercent": 65,
+            "yPercent": 80
+        },
+        "reporterName": "Bambang Sutrisno",
+        "reporterRole": "Ketua Kelompok Tani Kepunduhan",
+        "reporterPhone": "0857-1122-3344",
+        "reporterNik": "3328012005010003",
+        "isAnonymous": false,
+        "upvotes": 16,
+        "hasUpvoted": false,
+        "assignedTeam": "Tim Tata Air & Irigasi Desa",
+        "notes": "Menunggu penggantian roda gigi gear box pengangkat pintu air.",
+        "timeline": [
+            {
+                "title": "Laporan Diterima",
+                "time": "31 Oct 2026, 07:15 WIB",
+                "description": "Laporan ditinjau oleh staf pelayanan desa.",
+                "actor": "Bambang Sutrisno",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0422",
+        "title": "Poskamling Rusak & Atap Bocor di RT 04 Dusun Kepunduhan Timur",
+        "category": "fasilitas",
+        "categoryLabel": "Fasilitas & Balai",
+        "categoryIcon": "roofing",
+        "status": "Diajukan",
+        "location": "Gardu Ronda RT 04 / RW 02 Dusun Kepunduhan Timur",
+        "dusun": "Dusun Kepunduhan Timur",
+        "description": "Genteng pos kamling banyak yang pecah dan tiang bambu penyangga lapuk, mengganggu kegiatan siskamling warga saat hujan malam hari.",
+        "timeAgo": "1 jam lalu",
+        "createdAt": "2026-10-31 09:45",
+        "priority": "Rendah",
+        "officerBadge": "Prioritas: Rendah",
+        "officerBadgeType": "priority",
+        "coordinates": {
+            "lat": -6.8790,
+            "lng": 109.1855,
+            "xPercent": 62,
+            "yPercent": 42
+        },
+        "reporterName": "Nur Hidayah",
+        "reporterRole": "Kader Posyandu Desa Kepunduhan",
+        "reporterPhone": "0858-7788-9900",
+        "reporterNik": "3328012005010007",
+        "isAnonymous": false,
+        "upvotes": 8,
+        "hasUpvoted": false,
+        "assignedTeam": null,
+        "notes": null,
+        "timeline": [
+            {
+                "title": "Laporan Diajukan",
+                "time": "31 Oct 2026, 09:45 WIB",
+                "description": "Laporan diajukan warga ke portal desa.",
+                "actor": "Nur Hidayah",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    },
+    {
+        "id": "#LAP-0423",
+        "title": "Perbaikan Lampu Sorot Lapangan Voli Desa Kepunduhan",
+        "category": "penerangan",
+        "categoryLabel": "Penerangan Jalan",
+        "categoryIcon": "light",
+        "status": "Selesai",
+        "location": "Lapangan Voli Pemuda, Jl. Beringin Belakang Balai Desa",
+        "dusun": "Dusun Beringin (Krajan)",
+        "description": "Dua unit lampu sorot lapangan olahraga mati sehingga kegiatan latihan pemuda karang taruna malam hari terhambat.",
+        "timeAgo": "3 hari lalu",
+        "createdAt": "2026-10-28 17:00",
+        "priority": "Sedang",
+        "officerBadge": "Selesai: Regu PJU",
+        "officerBadgeType": "officer",
+        "coordinates": {
+            "lat": -6.8798,
+            "lng": 109.1836,
+            "xPercent": 49,
+            "yPercent": 52
+        },
+        "reporterName": "Ahmad Fauzi",
+        "reporterRole": "Warga Kepunduhan Timur",
+        "reporterPhone": "0821-9876-5432",
+        "reporterNik": "3328012005010002",
+        "isAnonymous": false,
+        "upvotes": 22,
+        "hasUpvoted": true,
+        "assignedTeam": "Regu Kelistrikan & PJU",
+        "notes": "Penggantian kapasitor dan lampu LED sorot 100W telah diselesaikan.",
+        "timeline": [
+            {
+                "title": "Perbaikan Selesai",
+                "time": "29 Oct 2026, 11:00 WIB",
+                "description": "Lampu lapangan voli telah menyala kembali dengan terang.",
+                "actor": "Agus Salim (Regu PJU)",
+                "isCompleted": true
+            }
+        ],
+        "photos": [],
+        "comments": []
+    }
+]
