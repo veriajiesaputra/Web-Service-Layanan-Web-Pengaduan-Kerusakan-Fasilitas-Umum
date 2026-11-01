@@ -1,0 +1,90 @@
+[
+    {
+        "id": "cit-001",
+        "nik": "3328012005010001",
+        "name": "Siti Rahmawati",
+        "phone": "0812-3456-7890",
+        "dusun": "Dusun Beringin (Krajan)",
+        "rtRw": "RT 03 / RW 02",
+        "role": "Warga Dusun Beringin",
+        "password": "123456",
+        "createdAt": "2026-10-01 08:00:00"
+    },
+    {
+        "id": "cit-002",
+        "nik": "3328012005010002",
+        "name": "Ahmad Fauzi",
+        "phone": "0821-9876-5432",
+        "dusun": "Dusun Kepunduhan Timur",
+        "rtRw": "RT 05 / RW 02",
+        "role": "Warga Kepunduhan Timur",
+        "password": "123456",
+        "createdAt": "2026-10-01 09:00:00"
+    },
+    {
+        "id": "cit-003",
+        "nik": "3328012005010003",
+        "name": "Bambang Sutrisno",
+        "phone": "0857-1122-3344",
+        "dusun": "Blok Sawah Tani",
+        "rtRw": "RT 01 / RW 03",
+        "role": "Ketua Kelompok Tani Kepunduhan",
+        "password": "123456",
+        "createdAt": "2026-10-01 09:30:00"
+    },
+    {
+        "id": "cit-004",
+        "nik": "3328012005010004",
+        "name": "Rina Anggraini",
+        "phone": "0813-8899-7700",
+        "dusun": "Kawasan Usaha & Pasar Desa",
+        "rtRw": "RT 02 / RW 01",
+        "role": "Pelaku UMKM Desa Kepunduhan",
+        "password": "123456",
+        "createdAt": "2026-10-01 10:00:00"
+    },
+    {
+        "id": "cit-005",
+        "nik": "3328012005010005",
+        "name": "Budi Santoso",
+        "phone": "0812-1111-2222",
+        "dusun": "Dusun Beringin (Krajan)",
+        "rtRw": "RT 01 / RW 01",
+        "role": "Warga Jl. Beringin No. 1",
+        "password": "123456",
+        "createdAt": "2026-10-01 10:30:00"
+    },
+    {
+        "id": "cit-006",
+        "nik": "3328012005010006",
+        "name": "H. Slamet Riyadi",
+        "phone": "0819-3344-5566",
+        "dusun": "Dusun Kepunduhan Barat",
+        "rtRw": "RT 02 / RW 03",
+        "role": "Tokoh Masyarakat Kepunduhan",
+        "password": "123456",
+        "createdAt": "2026-10-02 08:30:00"
+    },
+    {
+        "id": "cit-007",
+        "nik": "3328012005010007",
+        "name": "Nur Hidayah",
+        "phone": "0858-7788-9900",
+        "dusun": "Dusun Kepunduhan Timur",
+        "rtRw": "RT 04 / RW 02",
+        "role": "Kader Posyandu Desa Kepunduhan",
+        "password": "123456",
+        "createdAt": "2026-10-02 09:00:00"
+    },
+    {
+        "id": "cit-008",
+        "nik": "3328012005010008",
+        "name": "Kusnandar",
+        "phone": "0877-6655-4433",
+        "dusun": "Wilayah Jalur Pantura Kramat",
+        "rtRw": "RT 01 / RW 04",
+        "role": "Warga Perlintasan Pantura",
+        "password": "123456",
+        "createdAt": "2026-10-02 10:00:00"
+    }
+]
