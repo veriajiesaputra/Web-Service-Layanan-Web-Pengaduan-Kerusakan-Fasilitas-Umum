@@ -1,0 +1,1943 @@
+openapi: 3.1.0
+info:
+  title: Sistem Layanan Pengaduan Warga Terpadu & Dasbor Operasional Desa (Desa Mandiri) API
+  version: 1.0.0
+  description: |
+    Kontrak RESTful API Layanan Pengaduan Warga Terpadu dan Dasbor Operasional Desa Mandiri.
+    Disusun berdasarkan prinsip API-first (Milestone M2 – API Blueprint) untuk standarisasi interaksi antara aplikasi mobile warga, panel dasbor desa, dan backend Laravel.
+    
+    **Kelompok 6 - Pemrograman Web Service (SAINTEK, Universitas Harkat Negeri)**:
+    - Veri Ajie Saputra (NIM: 23215017) – Koordinator & Core API Engineer
+    - Siti Furkotun Najiyah (NIM: 23215056) – Identity & Citizen Auth Specialist
+    - Siti Novia Desi Nurkhikmah (NIM: 23215006) – Field Operations Specialist
+    - Tiara Aulia Maharani (NIM: 23215039) – Community & Emergency Specialist
+  contact:
+    name: Tim Pengembang Kelompok 6 (Desa Mandiri)
+    email: support@desamandiri.id
+    url: https://desamandiri.id
+  license:
+    name: CC BY 4.0
+    url: https://creativecommons.org/licenses/by/4.0/
+
+servers:
+  - url: http://127.0.0.1:8000/api/v1
+    description: Server Pengembangan Lokal (Laravel Artisan)
+  - url: https://api.desamandiri.id/api/v1
+    description: Server Produksi Resmi Desa Mandiri
+
+tags:
+  - name: Auth
+    description: Layanan registrasi, autentikasi sesi warga (OTP/nomor telepon), dan manajemen token akses.
+  - name: Citizens
+    description: Manajemen data profil warga desa terautentikasi (Singleton /me).
+  - name: Categories
+    description: Klasifikasi master kategori pengaduan infrastruktur dan layanan desa.
+  - name: Reports
+    description: Siklus hidup laporan pengaduan warga (pengajuan, pembaruan, tracking, filtering, pencarian, dan pembatalan).
+  - name: Dispatches
+    description: Manajemen disposisi, penugasan regu lapangan, dan catatan audit operasional aduan.
+  - name: Comments
+    description: Diskusi publik dan catatan tindak lanjut penanganan pada tiket aduan.
+  - name: Upvotes
+    description: Partisipasi dukungan warga (upvoting) terhadap aduan prioritas desa.
+  - name: Teams
+    description: Manajemen 4 regu satgas lapangan (Kelistrikan, Drainase, Jalan, Tanggap Bencana) dan kesiapan armada.
+  - name: DailyNotes
+    description: Log internal dan catatan koordinasi harian operasional perangkat desa.
+  - name: EmergencyContacts
+    description: Direktori nomor darurat dan instansi penting tingkat desa dan kecamatan.
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Pendaftaran akun warga desa baru
+      description: Mendaftarkan warga baru ke dalam sistem menggunakan Nomor Induk Kependudukan (NIK) valid, nama lengkap, dan nomor kontak aktif.
+      operationId: registerCitizen
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRegisterInput"
+            example:
+              nik: "3201123456780001"
+              name: "Budi Santoso"
+              phone: "081234567890"
+              dusun: "Krajan"
+              rt_rw: "02/01"
+      responses:
+        "201":
+          description: Akun warga berhasil didaftarkan.
+          headers:
+            Location:
+              description: URI lokasi resource profil warga yang baru dibuat.
+              schema:
+                type: string
+                example: /api/v1/me
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Citizen"
+        "409":
+          description: NIK atau nomor telepon telah terdaftar sebelumnya dalam sistem.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: NIK atau nomor WhatsApp sudah terdaftar pada sistem kependudukan Desa Mandiri.
+                code: CITIZEN_ALREADY_EXISTS
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Autentikasi sesi warga desa
+      description: Mengotentikasi warga menggunakan nomor telepon terdaftar untuk memperoleh token akses Bearer Sanctum.
+      operationId: loginCitizen
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthLoginInput"
+            example:
+              phone: "081234567890"
+              otp: "123456"
+      responses:
+        "200":
+          description: Autentikasi berhasil, token akses dikembalikan.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthLoginResponse"
+        "401":
+          description: Nomor telepon tidak ditemukan atau kode OTP tidak valid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: Kode OTP tidak valid atau telah kedaluwarsa.
+                code: INVALID_CREDENTIALS
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Mencabut sesi aktif pengguna (Logout)
+      description: Menghapus token akses Bearer aktif yang digunakan saat ini dari sistem.
+      operationId: logoutCitizen
+      responses:
+        "204":
+          description: Sesi berhasil ditutup dan token dicabut tanpa konten balasan.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /me:
+    get:
+      tags:
+        - Citizens
+      summary: Mengambil profil warga yang sedang login
+      description: Menampilkan data identitas lengkap warga desa yang terautentikasi melalui token Bearer.
+      operationId: getAuthenticatedCitizenProfile
+      responses:
+        "200":
+          description: Data profil berhasil diambil.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Citizen"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      tags:
+        - Citizens
+      summary: Memperbarui profil akun sendiri
+      description: Memperbarui nomor telepon, dusun, atau data alamat RT/RW milik warga yang sedang login.
+      operationId: updateAuthenticatedCitizenProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CitizenUpdateInput"
+            example:
+              phone: "081298765432"
+              dusun: "Krajan"
+              rt_rw: "03/01"
+      responses:
+        "200":
+          description: Profil akun berhasil diperbarui.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Citizen"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Menampilkan seluruh kategori jenis infrastruktur
+      description: Mengambil seluruh daftar kategori pengaduan infrastruktur (Jalan, PJU, Irigasi, Fasilitas Umum) beserta ringkasan status aktif.
+      operationId: listCategories
+      security: []
+      responses:
+        "200":
+          description: Daftar kategori berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryList"
+        "400":
+          description: Parameter kueri atau format permintaan tidak valid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: Parameter permintaan yang dikirim tidak sesuai spesifikasi.
+                code: BAD_REQUEST
+    post:
+      tags:
+        - Categories
+      summary: Menambahkan kategori aduan baru
+      description: Menambahkan kategori pengaduan infrastruktur baru. Hanya dapat dilakukan oleh aktor Administrator Desa.
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+            example:
+              name: "Jembatan & Gorong-gorong"
+              icon: "bridge-icon"
+              description: "Pengaduan kerusakan jembatan desa, titian sawah, dan gorong-gorong lintas dusun."
+      responses:
+        "201":
+          description: Kategori berhasil dibuat.
+          headers:
+            Location:
+              description: URI kategori yang baru dibuat.
+              schema:
+                type: string
+                example: /api/v1/categories/5
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Category"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /reports:
+    get:
+      tags:
+        - Reports
+      summary: Mengambil daftar aduan warga
+      description: |
+        Menampilkan koleksi tiket aduan warga desa dengan dukungan pemfilteran kategori, status, prioritas, dusun, rentang tanggal, pencarian kata kunci (`q`), pengurutan ber-whitelist (`sort`), serta pagination standar (page & per_page).
+      operationId: listReports
+      security: []
+      parameters:
+        - name: category_id
+          in: query
+          description: Filter berdasarkan ID kategori infrastruktur
+          schema:
+            type: integer
+            minimum: 1
+        - name: status
+          in: query
+          description: Filter status tiket laporan saat ini
+          schema:
+            type: string
+            enum:
+              - pending
+              - verified
+              - in_progress
+              - resolved
+              - rejected
+        - name: priority
+          in: query
+          description: Filter tingkat urgensi penanganan
+          schema:
+            type: string
+            enum:
+              - low
+              - medium
+              - high
+              - urgent
+        - name: dusun
+          in: query
+          description: Filter nama dusun lokasi kejadian
+          schema:
+            type: string
+            example: Krajan
+        - name: date_from
+          in: query
+          description: Batas awal tanggal pembuatan aduan (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+            example: "2026-10-01"
+        - name: date_to
+          in: query
+          description: Batas akhir tanggal pembuatan aduan (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+            example: "2026-10-31"
+        - name: q
+          in: query
+          description: Pencarian teks parsial pada judul, deskripsi, dan nama lokasi laporan
+          schema:
+            type: string
+            maxLength: 100
+            example: lampu jalan
+        - name: sort
+          in: query
+          description: Whitelist kolom pengurutan data; tambahkan tanda '-' untuk urutan menurun (descending). Default '-created_at'.
+          schema:
+            type: string
+            enum:
+              - created_at
+              - "-created_at"
+              - upvote_count
+              - "-upvote_count"
+              - priority
+              - "-priority"
+            default: "-created_at"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+      responses:
+        "200":
+          description: Koleksi laporan berpagination berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportList"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+    post:
+      tags:
+        - Reports
+      summary: Mengajukan aduan infrastruktur baru
+      description: Mengirim tiket pengaduan kerusakan infrastruktur baru oleh warga desa terdaftar.
+      operationId: createReport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportInput"
+            example:
+              category_id: 3
+              title: "Lampu penerangan pos ronda padam total"
+              description: "Lampu PJU di tiang nomor 04 samping pos ronda mati sejak 2 hari lalu akibat korsleting kabel saat hujan lebat."
+              location_name: "Pos Ronda RT 02 / RW 01"
+              dusun: "Krajan"
+              latitude: -7.324512
+              longitude: 108.219845
+      responses:
+        "201":
+          description: Tiket aduan berhasil dibuat dan menunggu verifikasi.
+          headers:
+            Location:
+              description: URI lokasi laporan baru yang dibuat.
+              schema:
+                type: string
+                example: /api/v1/reports/101
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ReportDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /reports/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+    get:
+      tags:
+        - Reports
+      summary: Melihat detail satu laporan & progres timeline
+      description: Mengambil data rincian tiket aduan lengkap dengan profil pelapor, disposisi penugasan satgas, dan kronologi riwayat penanganan.
+      operationId: getReportById
+      security: []
+      responses:
+        "200":
+          description: Rincian aduan berhasil dimuat.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ReportDetail"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags:
+        - Reports
+      summary: Memperbarui rincian aduan
+      description: Memperbarui judul, deskripsi, atau titik lokasi aduan. Hanya dapat dilakukan oleh warga pelapor asli dan selama status tiket masih pending.
+      operationId: updateReport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportUpdateInput"
+            example:
+              title: "Lampu penerangan pos ronda dan kabel utama korslet"
+              description: "Ditemukan sambungan kabel di atas trafo terbakar dan mengeluarkan bau gosong saat saklar dinyalakan."
+      responses:
+        "200":
+          description: Tiket aduan berhasil diperbarui.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ReportDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Konflik aturan bisnis (tiket aduan telah diverifikasi atau sedang dikerjakan satgas).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: Tiket aduan tidak dapat diperbarui karena telah diverifikasi atau sedang dalam penanganan tim satgas.
+                code: REPORT_ALREADY_LOCKED
+        "422":
+          $ref: "#/components/responses/ValidationError"
+    delete:
+      tags:
+        - Reports
+      summary: Menghapus aduan sebelum diproses
+      description: Menghapus tiket aduan milik pelapor. Tiket hanya dapat dihapus jika belum ditugaskan ke tim lapangan satgas.
+      operationId: deleteReport
+      responses:
+        "204":
+          description: Tiket aduan berhasil dihapus tanpa konten balasan.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Laporan tidak dapat dihapus karena sudah memiliki riwayat disposisi satgas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: Laporan ini tidak dapat dihapus karena regu satgas lapangan sedang dalam proses pengerjaan.
+                code: REPORT_ALREADY_DISPATCHED
+
+  /reports/{id}/dispatches:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+    get:
+      tags:
+        - Dispatches
+      summary: Melihat riwayat penugasan tim lapangan (audit trail)
+      description: Mengambil seluruh riwayat disposisi dan penugasan tim satgas lapangan pada laporan terkait.
+      operationId: listReportDispatches
+      responses:
+        "200":
+          description: Daftar disposisi berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DispatchList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags:
+        - Dispatches
+      summary: Verifikasi aduan dan disposisi tim lapangan
+      description: Pejabat/Admin desa menetapkan validitas laporan dan mendisposisikan salah satu regu teknisi lapangan dengan instruksi tertulis.
+      operationId: dispatchReportTeam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DispatchInput"
+            example:
+              team_id: 3
+              instruction: "Tolong segera cek tiang nomor 04 di Dusun Krajan. Sambungkan kembali kabel utama yang terputus."
+              priority: "high"
+      responses:
+        "201":
+          description: Disposisi satgas berhasil dibuat dan status aduan diperbarui.
+          headers:
+            Location:
+              description: URI disposisi penugasan baru.
+              schema:
+                type: string
+                example: /api/v1/reports/101/dispatches/45
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dispatch"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Laporan berstatus ditolak atau regu lapangan yang dipilih sedang tidak bertugas (istirahat/perbaikan).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: Regu teknisi yang dipilih sedang dalam perbaikan armada dan tidak dapat ditugaskan saat ini.
+                code: TEAM_UNAVAILABLE_CONFLICT
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /reports/{id}/upvotes:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+    post:
+      tags:
+        - Upvotes
+      summary: Memberikan atau mencabut upvote dukungan warga
+      description: Mengaktifkan atau mencabut satu suara dukungan warga terdaftar pada laporan terkait (toggle pattern).
+      operationId: toggleReportUpvote
+      responses:
+        "200":
+          description: Status dukungan berhasil dialihkan (upvoted atau un-upvoted).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/UpvoteToggleResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /reports/{id}/comments:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+    get:
+      tags:
+        - Comments
+      summary: Mengambil daftar komentar diskusi aduan
+      description: Menampilkan urutan linimasa komentar diskusi publik antara warga pelapor dan petugas desa.
+      operationId: listReportComments
+      security: []
+      responses:
+        "200":
+          description: Riwayat komentar berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentList"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags:
+        - Comments
+      summary: Menambahkan komentar tindak lanjut penanganan
+      description: Menambahkan komentar baru pada tiket aduan sebagai bentuk klarifikasi atau catatan kemajuan penanganan.
+      operationId: createReportComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+            example:
+              message: "Tim satgas kelistrikan telah tiba di lokasi dan sedang mengisolasi jalur kabel utama."
+      responses:
+        "201":
+          description: Komentar berhasil diposting.
+          headers:
+            Location:
+              description: URI komentar yang baru ditambahkan.
+              schema:
+                type: string
+                example: /api/v1/reports/101/comments/12
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /teams:
+    get:
+      tags:
+        - Teams
+      summary: Melihat ketersediaan 4 regu satgas & armada
+      description: Menampilkan daftar seluruh regu teknisi lapangan desa, kapasitas armada, ketua regu, dan status kesiapan operasional.
+      operationId: listTeams
+      parameters:
+        - name: status
+          in: query
+          description: Filter status kesiapan satgas
+          schema:
+            type: string
+            enum:
+              - ready
+              - deployed
+              - resting
+        - name: division
+          in: query
+          description: Filter berdasarkan divisi teknis
+          schema:
+            type: string
+            example: Kelistrikan
+      responses:
+        "200":
+          description: Daftar regu teknisi berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /teams/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+    patch:
+      tags:
+        - Teams
+      summary: Memperbarui status kesiapan regu satgas
+      description: Memperbarui status ketersediaan regu (ready, deployed, resting) atau kontak armada lapangan.
+      operationId: updateTeamStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamUpdateInput"
+            example:
+              status: "ready"
+              phone: "0813-9988-7711"
+      responses:
+        "200":
+          description: Status tim satgas berhasil diperbarui.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Team"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /daily-notes:
+    get:
+      tags:
+        - DailyNotes
+      summary: Daftar catatan koordinasi harian perangkat desa
+      description: Menampilkan log catatan harian kegiatan operasional desa dengan filter kategori, pencarian teks, sort, dan pagination.
+      operationId: listDailyNotes
+      parameters:
+        - name: category
+          in: query
+          description: Filter kategori catatan harian
+          schema:
+            type: string
+            enum:
+              - briefing
+              - maintenance
+              - incident
+              - general
+        - name: date_from
+          in: query
+          description: Batas awal tanggal catatan (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+            example: "2026-10-01"
+        - name: date_to
+          in: query
+          description: Batas akhir tanggal catatan (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+            example: "2026-10-31"
+        - name: q
+          in: query
+          description: Pencarian kata kunci pada judul dan isi catatan operasional
+          schema:
+            type: string
+            maxLength: 100
+            example: drainase
+        - name: sort
+          in: query
+          description: Whitelist kolom pengurutan catatan harian; tambahkan '-' untuk descending.
+          schema:
+            type: string
+            enum:
+              - note_date
+              - "-note_date"
+              - created_at
+              - "-created_at"
+            default: "-note_date"
+        - $ref: "#/components/parameters/Page"
+        - name: per_page
+          in: query
+          description: Jumlah catatan per halaman (maksimum 50)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 15
+      responses:
+        "200":
+          description: Daftar catatan koordinasi harian berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyNoteList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+    post:
+      tags:
+        - DailyNotes
+      summary: Menambahkan catatan harian operasional baru
+      description: Mencatat hasil rapat internal, briefing regu satgas, atau inspeksi lapangan oleh perangkat desa.
+      operationId: createDailyNote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DailyNoteInput"
+            example:
+              title: "Briefing Pagi Koordinasi Antisipasi Musim Hujan"
+              note_date: "2026-10-24"
+              category: "briefing"
+              content: "Diputuskan untuk memprioritaskan pembersihan sedimen drainase di Dusun Sukajaya dan memeriksa fungsi pompa cadangan."
+      responses:
+        "201":
+          description: Catatan harian operasional berhasil disimpan.
+          headers:
+            Location:
+              description: URI catatan harian baru yang dibuat.
+              schema:
+                type: string
+                example: /api/v1/daily-notes/15
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/DailyNote"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /emergency-contacts:
+    get:
+      tags:
+        - EmergencyContacts
+      summary: Mengambil daftar nomor darurat & instansi desa
+      description: Direktori terbuka nomor kontak penting (Puskesmas Pembantu, Bhabinkamtibmas, Babinsa, Pemadam Kebakaran, Ambulans Desa).
+      operationId: listEmergencyContacts
+      security: []
+      responses:
+        "200":
+          description: Direktori kontak darurat berhasil dimuat.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmergencyContactList"
+        "400":
+          description: Parameter kueri atau format permintaan tidak valid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                message: Parameter kueri direktori tidak valid.
+                code: BAD_REQUEST
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Sanctum / Token
+      description: Masukkan token otorisasi Bearer yang diperoleh setelah login berhasil.
+
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Identifier numerik unik resource terkait (integer positif).
+      schema:
+        type: integer
+        minimum: 1
+        example: 101
+
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Nomor halaman data yang ingin diambil (1-based index).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: Jumlah entri rekaman data per halaman (maksimum 100).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 15
+        example: 15
+
+  responses:
+    Unauthorized:
+      description: Akses ditolak karena token autentikasi tidak ada atau tidak valid.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: Akses ditolak. Token autentikasi tidak ditemukan atau telah kedaluwarsa.
+            code: UNAUTHENTICATED
+
+    Forbidden:
+      description: Wewenang tidak memadai untuk mengeksekusi operasi ini.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: Anda tidak memiliki wewenang administrator desa untuk menjalankan aksi ini.
+            code: PERMISSION_DENIED
+
+    NotFound:
+      description: Data atau resource yang diminta tidak ditemukan pada sistem.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: Resource yang diminta tidak ditemukan atau telah dihapus.
+            code: RESOURCE_NOT_FOUND
+
+    ValidationError:
+      description: Validasi masukan data gagal memenuhi aturan yang ditetapkan.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ValidationError"
+          example:
+            message: Data pengaduan yang dikirim tidak valid.
+            errors:
+              category_id:
+                - Kategori aduan wajib dipilih dan harus valid.
+              latitude:
+                - Titik koordinat latitude harus di antara -90 hingga 90 derajat.
+
+  schemas:
+    # Error Schemas
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Pesan penjelasan human-readable mengenai kegagalan permintaan.
+          example: Fasilitas aduan tidak ditemukan.
+        code:
+          type: string
+          description: Kode error unik berbasis teks untuk interpretasi oleh mesin/klien.
+          example: RESOURCE_NOT_FOUND
+
+    ValidationError:
+      type: object
+      required:
+        - message
+        - errors
+      properties:
+        message:
+          type: string
+          description: Pesan ringkasan kegagalan validasi.
+          example: Data yang dikirim tidak valid.
+        errors:
+          type: object
+          description: Kamus atribut field yang gagal divalidasi beserta daftar pesan kesalahan.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            phone:
+              - Nomor WhatsApp wajib diisi dengan format nomor seluler Indonesia yang valid.
+
+    # Pagination Components
+    PaginationLinks:
+      type: object
+      required:
+        - first
+        - last
+      properties:
+        first:
+          type:
+            - string
+            - "null"
+          format: uri
+          example: "https://api.desamandiri.id/api/v1/reports?page=1&per_page=15"
+        prev:
+          type:
+            - string
+            - "null"
+          format: uri
+          example: null
+        next:
+          type:
+            - string
+            - "null"
+          format: uri
+          example: "https://api.desamandiri.id/api/v1/reports?page=2&per_page=15"
+        last:
+          type:
+            - string
+            - "null"
+          format: uri
+          example: "https://api.desamandiri.id/api/v1/reports?page=3&per_page=15"
+
+    PaginationMeta:
+      type: object
+      required:
+        - current_page
+        - per_page
+        - total
+        - last_page
+      properties:
+        current_page:
+          type: integer
+          example: 1
+        from:
+          type:
+            - integer
+            - "null"
+          example: 1
+        to:
+          type:
+            - integer
+            - "null"
+          example: 15
+        per_page:
+          type: integer
+          example: 15
+        total:
+          type: integer
+          example: 42
+        last_page:
+          type: integer
+          example: 3
+
+    # Citizen & Auth Schemas
+    Citizen:
+      type: object
+      required:
+        - id
+        - nik
+        - name
+        - phone
+        - dusun
+        - rt_rw
+        - created_at
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 14
+        nik:
+          type: string
+          readOnly: true
+          pattern: "^[0-9]{16}$"
+          example: "3201123456780001"
+        name:
+          type: string
+          maxLength: 100
+          example: Budi Santoso
+        phone:
+          type: string
+          maxLength: 20
+          example: "081234567890"
+        dusun:
+          type: string
+          example: Krajan
+        rt_rw:
+          type: string
+          example: "02/01"
+        total_reports:
+          type: integer
+          readOnly: true
+          example: 3
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-09-01T10:00:00+07:00"
+
+    CitizenSummary:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 14
+        name:
+          type: string
+          example: Budi Santoso
+        phone:
+          type:
+            - string
+            - "null"
+          example: "0812-3456-7890"
+        dusun:
+          type:
+            - string
+            - "null"
+          example: Krajan
+        rt_rw:
+          type:
+            - string
+            - "null"
+          example: "RT 02 / RW 01"
+
+    CitizenUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          example: Budi Santoso, S.T.
+        phone:
+          type: string
+          maxLength: 20
+          example: "081298765432"
+        dusun:
+          type: string
+          example: Krajan
+        rt_rw:
+          type: string
+          example: "03/01"
+
+    AuthLoginInput:
+      type: object
+      required:
+        - phone
+        - otp
+      properties:
+        phone:
+          type: string
+          pattern: "^(08|\\+628)[0-9]{8,13}$"
+          example: "081234567890"
+        otp:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: "123456"
+
+    AuthLoginResponse:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - user
+      properties:
+        access_token:
+          type: string
+          example: "1|7xK09dNmY1eL29B87kPz49..."
+        token_type:
+          type: string
+          example: Bearer
+        user:
+          $ref: "#/components/schemas/Citizen"
+
+    AuthRegisterInput:
+      type: object
+      required:
+        - nik
+        - name
+        - phone
+        - dusun
+        - rt_rw
+      properties:
+        nik:
+          type: string
+          pattern: "^[0-9]{16}$"
+          description: Nomor Induk Kependudukan (16 digit angka resmi)
+          example: "3201123456780001"
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+          example: Budi Santoso
+        phone:
+          type: string
+          pattern: "^(08|\\+628)[0-9]{8,13}$"
+          example: "081234567890"
+        dusun:
+          type: string
+          example: Krajan
+        rt_rw:
+          type: string
+          example: "02/01"
+
+    # Category Schemas
+    CategorySummary:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: Penerangan Jalan Umum (PJU)
+        slug:
+          type:
+            - string
+            - "null"
+          example: pju
+
+    Category:
+      type: object
+      required:
+        - id
+        - name
+        - slug
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 3
+        name:
+          type: string
+          maxLength: 100
+          example: Penerangan Jalan Umum (PJU)
+        slug:
+          type: string
+          readOnly: true
+          example: pju
+        icon:
+          type:
+            - string
+            - "null"
+          example: lamp-post
+        description:
+          type:
+            - string
+            - "null"
+          example: Laporan terkait lampu penerangan jalan desa padam, kabel kendor, dan tiang miring.
+
+    CategoryInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+          example: Jembatan & Gorong-gorong
+        icon:
+          type: string
+          example: bridge-icon
+        description:
+          type: string
+          maxLength: 255
+          example: Pengaduan kerusakan jembatan desa, titian sawah, dan gorong-gorong lintas dusun.
+
+    CategoryList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+
+    # Report Schemas
+    TimelineItem:
+      type: object
+      required:
+        - status
+        - title
+        - actor
+        - timestamp
+      properties:
+        status:
+          type: string
+          example: in_progress
+        title:
+          type: string
+          example: Disposisi Satgas Lapangan
+        description:
+          type:
+            - string
+            - "null"
+          example: Laporan diverifikasi sah dan regu teknisi ditugaskan.
+        actor:
+          type: string
+          example: Kaur Pembangunan (Admin Desa)
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-10-19T08:00:00+07:00"
+
+    ReportSummary:
+      type: object
+      required:
+        - id
+        - ticket_no
+        - title
+        - category
+        - reporter
+        - location_name
+        - status
+        - priority
+        - upvote_count
+        - created_at
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 101
+        ticket_no:
+          type: string
+          readOnly: true
+          example: "LAP-202610-0101"
+        title:
+          type: string
+          example: Lampu penerangan pos ronda padam total
+        category:
+          $ref: "#/components/schemas/CategorySummary"
+        reporter:
+          $ref: "#/components/schemas/CitizenSummary"
+        location_name:
+          type: string
+          example: Pos Ronda RT 02 / RW 01
+        latitude:
+          type: number
+          format: float
+          example: -7.324512
+        longitude:
+          type: number
+          format: float
+          example: 108.219845
+        status:
+          type: string
+          enum:
+            - pending
+            - verified
+            - in_progress
+            - resolved
+            - rejected
+          example: in_progress
+        priority:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - urgent
+          example: high
+        upvote_count:
+          type: integer
+          readOnly: true
+          example: 18
+        comment_count:
+          type: integer
+          readOnly: true
+          example: 4
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-10-18T19:30:00+07:00"
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-10-19T08:15:20+07:00"
+
+    ReportDetail:
+      type: object
+      required:
+        - id
+        - ticket_no
+        - title
+        - category
+        - description
+        - location_name
+        - reporter
+        - status
+        - priority
+        - created_at
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 101
+        ticket_no:
+          type: string
+          readOnly: true
+          example: "LAP-202610-0101"
+        title:
+          type: string
+          example: Lampu penerangan pos ronda padam total
+        category:
+          $ref: "#/components/schemas/CategorySummary"
+        description:
+          type: string
+          example: Lampu PJU di tiang nomor 04 samping pos ronda mati sejak 2 hari lalu akibat korsleting kabel saat hujan lebat.
+        location_name:
+          type: string
+          example: Pos Ronda RT 02 / RW 01, Dusun Krajan
+        latitude:
+          type: number
+          format: float
+          minimum: -90
+          maximum: 90
+          example: -7.324512
+        longitude:
+          type: number
+          format: float
+          minimum: -180
+          maximum: 180
+          example: 108.219845
+        status:
+          type: string
+          enum:
+            - pending
+            - verified
+            - in_progress
+            - resolved
+            - rejected
+          example: in_progress
+        priority:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - urgent
+          example: high
+        upvote_count:
+          type: integer
+          readOnly: true
+          example: 18
+        reporter:
+          $ref: "#/components/schemas/CitizenSummary"
+        current_dispatch:
+          type:
+            - object
+            - "null"
+          properties:
+            id:
+              type: integer
+              example: 45
+            team_name:
+              type: string
+              example: Regu Kelistrikan & PJU
+            officer_name:
+              type: string
+              example: Kaur Pembangunan
+            instruction:
+              type: string
+              example: Lakukan penggantian bohlam LED 50W dan periksa sambungan trafo.
+            dispatched_at:
+              type: string
+              format: date-time
+              example: "2026-10-19T08:00:00+07:00"
+        timeline:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelineItem"
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-10-18T19:30:00+07:00"
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-10-19T08:15:20+07:00"
+
+    ReportInput:
+      type: object
+      required:
+        - category_id
+        - title
+        - description
+        - location_name
+      properties:
+        category_id:
+          type: integer
+          minimum: 1
+          example: 3
+        title:
+          type: string
+          minLength: 5
+          maxLength: 150
+          example: Lampu penerangan pos ronda padam total
+        description:
+          type: string
+          minLength: 10
+          example: Lampu PJU di tiang nomor 04 samping pos ronda mati sejak 2 hari lalu akibat korsleting kabel saat hujan lebat.
+        location_name:
+          type: string
+          minLength: 3
+          maxLength: 150
+          example: Pos Ronda RT 02 / RW 01
+        dusun:
+          type: string
+          example: Krajan
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+          example: -7.324512
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+          example: 108.219845
+
+    ReportUpdateInput:
+      type: object
+      properties:
+        category_id:
+          type: integer
+          minimum: 1
+          example: 3
+        title:
+          type: string
+          minLength: 5
+          maxLength: 150
+          example: Lampu penerangan pos ronda padam total dan kabel korslet
+        description:
+          type: string
+          minLength: 10
+          example: Ditemukan sambungan kabel di atas trafo terbakar dan mengeluarkan bau gosong saat saklar dinyalakan.
+        location_name:
+          type: string
+          example: Pos Ronda RT 02 / RW 01
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+          example: -7.324512
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+          example: 108.219845
+
+    ReportList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportSummary"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+
+    # Dispatch Schemas
+    DispatchInput:
+      type: object
+      required:
+        - team_id
+        - instruction
+      properties:
+        team_id:
+          type: integer
+          minimum: 1
+          example: 3
+        instruction:
+          type: string
+          minLength: 10
+          example: Tolong segera cek tiang nomor 04 di Dusun Krajan. Sambungkan kembali kabel utama yang terputus.
+        priority:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - urgent
+          default: medium
+          example: high
+
+    Dispatch:
+      type: object
+      required:
+        - id
+        - report_id
+        - team
+        - officer_name
+        - instruction
+        - dispatched_at
+        - status
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 45
+        report_id:
+          type: integer
+          readOnly: true
+          example: 101
+        team:
+          $ref: "#/components/schemas/TeamSummary"
+        officer_name:
+          type: string
+          example: Kaur Pembangunan
+        instruction:
+          type: string
+          example: Tolong segera cek tiang nomor 04 di Dusun Krajan. Sambungkan kembali kabel utama yang terputus.
+        dispatched_at:
+          type: string
+          format: date-time
+          example: "2026-10-19T08:00:00+07:00"
+        completed_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+          example: null
+        status:
+          type: string
+          enum:
+            - assigned
+            - on_the_way
+            - investigating
+            - completed
+            - cancelled
+          example: assigned
+
+    DispatchList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dispatch"
+
+    # Upvote Schema
+    UpvoteToggleResponse:
+      type: object
+      required:
+        - report_id
+        - has_upvoted
+        - upvote_count
+      properties:
+        report_id:
+          type: integer
+          example: 101
+        has_upvoted:
+          type: boolean
+          example: true
+        upvote_count:
+          type: integer
+          example: 19
+
+    # Comment Schemas
+    CommentInput:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          minLength: 2
+          maxLength: 1000
+          example: Tim satgas kelistrikan telah tiba di lokasi dan sedang mengisolasi jalur kabel utama.
+
+    Comment:
+      type: object
+      required:
+        - id
+        - report_id
+        - author_name
+        - author_role
+        - message
+        - created_at
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 12
+        report_id:
+          type: integer
+          readOnly: true
+          example: 101
+        author_name:
+          type: string
+          example: Kaur Pembangunan
+        author_role:
+          type: string
+          enum:
+            - citizen
+            - officer
+            - team
+          example: officer
+        message:
+          type: string
+          example: Tim satgas kelistrikan telah tiba di lokasi dan sedang mengisolasi jalur kabel utama.
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-19T08:30:00+07:00"
+
+    CommentList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+
+    # Team Schemas
+    TeamSummary:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: Regu Kelistrikan & PJU
+        division:
+          type:
+            - string
+            - "null"
+          example: Kelistrikan
+
+    Team:
+      type: object
+      required:
+        - id
+        - name
+        - division
+        - leader_name
+        - phone
+        - vehicle
+        - status
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 3
+        name:
+          type: string
+          example: Regu Kelistrikan & PJU
+        division:
+          type: string
+          example: Kelistrikan
+        leader_name:
+          type: string
+          example: Slamet Supriyadi
+        phone:
+          type: string
+          example: "0813-9988-7711"
+        vehicle:
+          type: string
+          example: Mobil Pick-Up Tangga Hidrolik D-8821-X
+        status:
+          type: string
+          enum:
+            - ready
+            - deployed
+            - resting
+          example: ready
+
+    TeamUpdateInput:
+      type: object
+      properties:
+        leader_name:
+          type: string
+          example: Slamet Supriyadi
+        phone:
+          type: string
+          example: "0813-9988-7711"
+        status:
+          type: string
+          enum:
+            - ready
+            - deployed
+            - resting
+          example: ready
+
+    TeamList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Team"
+
+    # Daily Note Schemas
+    DailyNoteInput:
+      type: object
+      required:
+        - title
+        - note_date
+        - category
+        - content
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 150
+          example: Briefing Pagi Koordinasi Antisipasi Musim Hujan
+        note_date:
+          type: string
+          format: date
+          example: "2026-10-24"
+        category:
+          type: string
+          enum:
+            - briefing
+            - maintenance
+            - incident
+            - general
+          example: briefing
+        content:
+          type: string
+          minLength: 10
+          example: Diputuskan untuk memprioritaskan pembersihan sedimen drainase di Dusun Sukajaya dan memeriksa fungsi pompa cadangan.
+
+    DailyNote:
+      type: object
+      required:
+        - id
+        - officer_name
+        - title
+        - note_date
+        - category
+        - content
+        - created_at
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 15
+        officer_name:
+          type: string
+          example: Sekretaris Desa
+        title:
+          type: string
+          example: Briefing Pagi Koordinasi Antisipasi Musim Hujan
+        note_date:
+          type: string
+          format: date
+          example: "2026-10-24"
+        category:
+          type: string
+          enum:
+            - briefing
+            - maintenance
+            - incident
+            - general
+          example: briefing
+        content:
+          type: string
+          example: Diputuskan untuk memprioritaskan pembersihan sedimen drainase di Dusun Sukajaya dan memeriksa fungsi pompa cadangan.
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-24T08:00:00+07:00"
+
+    DailyNoteList:
+      type: object
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DailyNote"
+        links:
+          $ref: "#/components/schemas/PaginationLinks"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+
+    # Emergency Contact Schemas
+    EmergencyContact:
+      type: object
+      required:
+        - id
+        - agency_name
+        - category
+        - phone_number
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 1
+        agency_name:
+          type: string
+          example: Ambulans Siaga Desa Mandiri
+        category:
+          type: string
+          example: Medis & Darurat Kesehatan
+        phone_number:
+          type: string
+          example: "0811-2233-4455"
+        description:
+          type:
+            - string
+            - "null"
+          example: Layanan mobil ambulans gratis siaga 24 jam untuk rujukan warga desa.
+        is_active:
+          type: boolean
+          example: true
+
+    EmergencyContactList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmergencyContact"
