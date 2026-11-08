@@ -106,7 +106,7 @@ class CitizenAuthController extends Controller
                     ->withHeaders(['Authorization' => $fonnteToken])
                     ->post('https://api.fonnte.com/send', [
                         'target' => $formattedPhone,
-                        'message' => "🏛️ *DESA MANDIRI - SISTEM PELAYANAN WARGA*\n\nKode OTP Masuk Akun Anda: *{$otp}*\n\nKode ini bersifat rahasia dan berlaku selama 5 menit. Jangan bagikan kepada siapapun.",
+                        'message' => "🏛️ *DESA KEPUNDUHAN - SISTEM PELAYANAN WARGA*\n\nKode OTP Masuk Akun Anda: *{$otp}*\n\nKode ini bersifat rahasia dan berlaku selama 5 menit. Jangan bagikan kepada siapapun.",
                     ]);
 
                 if ($response->successful()) {

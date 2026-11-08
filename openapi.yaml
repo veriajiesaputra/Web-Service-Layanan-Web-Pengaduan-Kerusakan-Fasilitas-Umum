@@ -12,7 +12,7 @@ servers:
   - url: http://127.0.0.1:8000/api/v1
     description: Server Pengembangan Lokal Laravel (v1)
   - url: https://api.desamandiri.id/api/v1
-    description: Server Staging / Produksi Desa Mandiri
+    description: Server Staging / Produksi Desa Kepunduhan
 
 tags:
   - name: Authentication

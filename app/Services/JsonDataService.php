@@ -727,7 +727,7 @@ class JsonDataService
 
         // Check unique NIK in MySQL
         if (Citizen::where('nik', $cleanNik)->exists()) {
-            return ['success' => false, 'message' => 'NIK sudah terdaftar dalam sistem Desa Mandiri'];
+            return ['success' => false, 'message' => 'NIK sudah terdaftar dalam sistem Desa Kepunduhan'];
         }
 
         $phone = trim($data['phone'] ?? '');
@@ -750,7 +750,7 @@ class JsonDataService
             'phone' => $phone,
             'dusun' => $data['dusun'] ?? 'Dusun Krajan',
             'rt_rw' => $data['rtRw'] ?? 'RT 01 / RW 01',
-            'role' => $data['role'] ?? 'Warga ' . ($data['dusun'] ?? 'Desa Mandiri'),
+            'role' => $data['role'] ?? 'Warga ' . ($data['dusun'] ?? 'Desa Kepunduhan'),
             'password' => $data['password'] ?? '123456',
         ]);
 

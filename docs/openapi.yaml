@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
-  title: Sistem Layanan Pengaduan Warga Terpadu & Dasbor Operasional Desa (Desa Mandiri) API
+  title: Sistem Layanan Pengaduan Warga Terpadu & Dasbor Operasional Desa (Desa Kepunduhan) API
   version: 1.0.0
   description: |
-    Kontrak RESTful API Layanan Pengaduan Warga Terpadu dan Dasbor Operasional Desa Mandiri.
+    Kontrak RESTful API Layanan Pengaduan Warga Terpadu dan Dasbor Operasional Desa Kepunduhan.
     Disusun berdasarkan prinsip API-first (Milestone M2 – API Blueprint) untuk standarisasi interaksi antara aplikasi mobile warga, panel dasbor desa, dan backend Laravel.
     
     **Kelompok 6 - Pemrograman Web Service (SAINTEK, Universitas Harkat Negeri)**:
@@ -12,7 +12,7 @@ info:
     - Siti Novia Desi Nurkhikmah (NIM: 23215006) – Field Operations Specialist
     - Tiara Aulia Maharani (NIM: 23215039) – Community & Emergency Specialist
   contact:
-    name: Tim Pengembang Kelompok 6 (Desa Mandiri)
+    name: Tim Pengembang Kelompok 6 (Desa Kepunduhan)
     email: support@desamandiri.id
     url: https://desamandiri.id
   license:
@@ -23,7 +23,7 @@ servers:
   - url: http://127.0.0.1:8000/api/v1
     description: Server Pengembangan Lokal (Laravel Artisan)
   - url: https://api.desamandiri.id/api/v1
-    description: Server Produksi Resmi Desa Mandiri
+    description: Server Produksi Resmi Desa Kepunduhan
 
 tags:
   - name: Auth
@@ -96,7 +96,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
               example:
-                message: NIK atau nomor WhatsApp sudah terdaftar pada sistem kependudukan Desa Mandiri.
+                message: NIK atau nomor WhatsApp sudah terdaftar pada sistem kependudukan Desa Kepunduhan.
                 code: CITIZEN_ALREADY_EXISTS
         "422":
           $ref: "#/components/responses/ValidationError"
@@ -1916,7 +1916,7 @@ components:
           example: 1
         agency_name:
           type: string
-          example: Ambulans Siaga Desa Mandiri
+          example: Ambulans Siaga Desa Kepunduhan
         category:
           type: string
           example: Medis & Darurat Kesehatan

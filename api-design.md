@@ -10,7 +10,7 @@
 
 ## A. Identitas Proyek & Anggota Kelompok
 
-* **Nama Proyek:** Sistem Layanan Pengaduan Warga Terpadu & Dasbor Operasional Desa (Desa Mandiri)
+* **Nama Proyek:** Sistem Layanan Pengaduan Warga Terpadu & Dasbor Operasional Desa (Desa Kepunduhan)
 * **Kelompok:** Kelompok-6
 * **Susunan Anggota & Pembagian Tanggung Jawab:**
   1. **Veri Ajie Saputra (NIM: 23215017)** – *Koordinator & Core API Engineer* (Layanan Pengaduan & Kategori)
