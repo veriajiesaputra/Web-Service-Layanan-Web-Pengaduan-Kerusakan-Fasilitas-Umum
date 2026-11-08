@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\DailyNoteController;
-use App\Http\Controllers\EmergencyContactController;
-use App\Http\Controllers\FieldTeamController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Api\V1\CitizenAuthController;
+use App\Http\Controllers\Api\V1\DailyNoteController;
+use App\Http\Controllers\Api\V1\EmergencyContactController;
+use App\Http\Controllers\Api\V1\FieldTeamController;
+use App\Http\Controllers\Api\V1\ReportController;
 use Illuminate\Support\Facades\Route;
 
 // Reports API (JSON backed)
@@ -31,12 +32,12 @@ Route::post('/daily-notes', [DailyNoteController::class, 'store']);
 Route::get('/emergency-contacts', [EmergencyContactController::class, 'index']);
 
 // Citizen Auth & Accounts API
-Route::post('/citizen/login', [\App\Http\Controllers\CitizenAuthController::class, 'login']);
-Route::post('/citizen/register', [\App\Http\Controllers\CitizenAuthController::class, 'register']);
-Route::post('/citizen/request-otp', [\App\Http\Controllers\CitizenAuthController::class, 'requestOtp']);
-Route::post('/citizen/verify-otp', [\App\Http\Controllers\CitizenAuthController::class, 'verifyOtp']);
-Route::get('/citizen/demo-accounts', [\App\Http\Controllers\CitizenAuthController::class, 'demoAccounts']);
-Route::get('/citizen/me', [\App\Http\Controllers\CitizenAuthController::class, 'me']);
+Route::post('/citizen/login', [CitizenAuthController::class, 'login']);
+Route::post('/citizen/register', [CitizenAuthController::class, 'register']);
+Route::post('/citizen/request-otp', [CitizenAuthController::class, 'requestOtp']);
+Route::post('/citizen/verify-otp', [CitizenAuthController::class, 'verifyOtp']);
+Route::get('/citizen/demo-accounts', [CitizenAuthController::class, 'demoAccounts']);
+Route::get('/citizen/me', [CitizenAuthController::class, 'me']);
 
 // RajaOngkir Wilayah & Kode Pos API
 Route::get('/regions/provinces', function () {
@@ -94,12 +95,12 @@ Route::get('/regions/search', function (\Illuminate\Http\Request $request) {
 // ==========================================
 Route::prefix('v1')->group(function () {
     // 1-5. Authentication & Me
-    Route::post('/auth/login', [\App\Http\Controllers\CitizenAuthController::class, 'login']);
-    Route::post('/auth/register', [\App\Http\Controllers\CitizenAuthController::class, 'register']);
+    Route::post('/auth/login', [\App\Http\Controllers\Api\V1\CitizenAuthController::class, 'login']);
+    Route::post('/auth/register', [\App\Http\Controllers\Api\V1\CitizenAuthController::class, 'register']);
     Route::post('/auth/logout', function () {
         return response()->noContent(); // 204 No Content
     });
-    Route::get('/me', [\App\Http\Controllers\CitizenAuthController::class, 'me']);
+    Route::get('/me', [\App\Http\Controllers\Api\V1\CitizenAuthController::class, 'me']);
     Route::patch('/me', function (\Illuminate\Http\Request $request) {
         $validated = $request->validate([
             'phone' => 'nullable|string',
@@ -140,14 +141,14 @@ Route::prefix('v1')->group(function () {
     });
 
     // 8-12. Reports CRUD
-    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index']);
-    Route::post('/reports', [\App\Http\Controllers\ReportController::class, 'store']);
-    Route::get('/reports/{id}', [\App\Http\Controllers\ReportController::class, 'show']);
-    Route::patch('/reports/{id}', [\App\Http\Controllers\ReportController::class, 'update']);
-    Route::delete('/reports/{id}', [\App\Http\Controllers\ReportController::class, 'destroy']);
+    Route::get('/reports', [\App\Http\Controllers\Api\V1\ReportController::class, 'index']);
+    Route::post('/reports', [\App\Http\Controllers\Api\V1\ReportController::class, 'store']);
+    Route::get('/reports/{id}', [\App\Http\Controllers\Api\V1\ReportController::class, 'show']);
+    Route::patch('/reports/{id}', [\App\Http\Controllers\Api\V1\ReportController::class, 'update']);
+    Route::delete('/reports/{id}', [\App\Http\Controllers\Api\V1\ReportController::class, 'destroy']);
 
     // 13-14. Dispatches (Pola B Sub-resource)
-    Route::post('/reports/{id}/dispatches', [\App\Http\Controllers\ReportController::class, 'verify']);
+    Route::post('/reports/{id}/dispatches', [\App\Http\Controllers\Api\V1\ReportController::class, 'verify']);
     Route::get('/reports/{id}/dispatches', function ($id) {
         return response()->json([
             'status' => 'success',
@@ -163,18 +164,20 @@ Route::prefix('v1')->group(function () {
     });
 
     // 15-17. Engagements (Upvotes & Comments)
-    Route::post('/reports/{id}/upvotes', [\App\Http\Controllers\ReportController::class, 'toggleUpvote']);
+    Route::post('/reports/{id}/upvotes', [\App\Http\Controllers\Api\V1\ReportController::class, 'toggleUpvote']);
     Route::get('/reports/{id}/comments', function ($id) {
         $report = app(\App\Services\JsonDataService::class)->getReportById($id);
         return response()->json($report['comments'] ?? []);
     });
-    Route::post('/reports/{id}/comments', [\App\Http\Controllers\ReportController::class, 'addComment']);
+    Route::post('/reports/{id}/comments', [\App\Http\Controllers\Api\V1\ReportController::class, 'addComment']);
 
     // 18-19. Teams
-    Route::get('/teams', [\App\Http\Controllers\FieldTeamController::class, 'index']);
-    Route::patch('/teams/{id}', [\App\Http\Controllers\FieldTeamController::class, 'update']);
+    Route::get('/teams', [\App\Http\Controllers\Api\V1\FieldTeamController::class, 'index']);
+    Route::patch('/teams/{id}', [\App\Http\Controllers\Api\V1\FieldTeamController::class, 'update']);
 
-    // 20. Daily Notes
-    Route::get('/daily-notes', [\App\Http\Controllers\DailyNoteController::class, 'index']);
+    // 20-21. Daily Notes & Emergency Contacts
+    Route::get('/daily-notes', [\App\Http\Controllers\Api\V1\DailyNoteController::class, 'index']);
+    Route::post('/daily-notes', [\App\Http\Controllers\Api\V1\DailyNoteController::class, 'store']);
+    Route::get('/emergency-contacts', [\App\Http\Controllers\Api\V1\EmergencyContactController::class, 'index']);
 });
 

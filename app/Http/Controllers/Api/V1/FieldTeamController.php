@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\TeamResource;
 use App\Services\JsonDataService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +19,8 @@ class FieldTeamController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->service->getTeams());
+        $teams = $this->service->getTeams();
+        return response()->json(TeamResource::collection(collect($teams)));
     }
 
     public function update(Request $request, string $id): JsonResponse
@@ -34,6 +37,6 @@ class FieldTeamController extends Controller
         if (!$updated) {
             return response()->json(['message' => 'Regu tidak ditemukan'], 404);
         }
-        return response()->json($updated);
+        return response()->json(new TeamResource($updated));
     }
 }

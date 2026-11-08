@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\DailyNoteResource;
 use App\Services\JsonDataService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,17 +19,18 @@ class DailyNoteController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->service->getDailyNotes());
+        $notes = $this->service->getDailyNotes();
+        return response()->json(DailyNoteResource::collection(collect($notes)));
     }
 
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'text' => 'required|string|max:1000',
-            'author' => 'nullable|string'
+            'author' => 'nullable|string',
         ]);
 
         $note = $this->service->addDailyNote($validated);
-        return response()->json($note, 201);
+        return response()->json(new DailyNoteResource($note), 201);
     }
 }

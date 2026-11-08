@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\EmergencyContactResource;
 use App\Services\JsonDataService;
 use Illuminate\Http\JsonResponse;
 
@@ -16,6 +18,7 @@ class EmergencyContactController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->service->getEmergencyContacts());
+        $contacts = $this->service->getEmergencyContacts();
+        return response()->json(EmergencyContactResource::collection(collect($contacts)));
     }
 }
