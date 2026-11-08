@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('reporter_role')->nullable();
             $table->string('reporter_phone')->nullable()->index();
             $table->string('reporter_nik', 16)->nullable();
+            $table->foreign('reporter_nik')->references('nik')->on('citizens')->onUpdate('cascade')->nullOnDelete();
             $table->boolean('is_anonymous')->default(false);
             $table->integer('upvotes')->default(0);
             $table->boolean('has_upvoted')->default(false);
