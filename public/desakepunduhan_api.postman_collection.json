@@ -1,407 +1,855 @@
 {
-	"info": {
-		"_postman_id": "a9b2c3d4-e5f6-7890-abcd-ef1234567890",
-		"name": "Portal Pengaduan Desa Kepunduhan API",
-		"description": "Koleksi API Lengkap Sistem Informasi Pengaduan & Layanan Publik Desa Kepunduhan, Kec. Kramat, Kab. Tegal 52181.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"variable": [
-		{
-			"key": "base_url",
-			"value": "http://127.0.0.1:8000/api",
-			"type": "string"
-		}
-	],
-	"item": [
-		{
-			"name": "1. Autentikasi & Akun Warga",
-			"item": [
-				{
-					"name": "Login Warga (NIK)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nik\": \"3328012005010001\",\n  \"password\": \"123456\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/auth/login",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "auth", "login"]
-						},
-						"description": "Login warga menggunakan NIK dan password demo (Siti Rahmawati - RT 03 Dusun Beringin)."
-					}
-				},
-				{
-					"name": "Registrasi Warga Baru",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nik\": \"3328012005010099\",\n  \"name\": \"Tri Handoko\",\n  \"phone\": \"082133445566\",\n  \"dusun\": \"Dusun Kepunduhan Barat\",\n  \"rtRw\": \"RT 02 / RW 03\",\n  \"password\": \"123456\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/auth/register",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "auth", "register"]
-						},
-						"description": "Pendaftaran akun warga Desa Kepunduhan baru."
-					}
-				},
-				{
-					"name": "Profil Pengguna Aktif (Me)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/me",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "me"]
-						},
-						"description": "Melihat identitas profil warga yang sedang login."
-					}
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/auth/logout",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "auth", "logout"]
-						},
-						"description": "Keluar dari sesi portal warga."
-					}
-				}
-			]
-		},
-		{
-			"name": "2. Laporan Pengaduan (Reports)",
-			"item": [
-				{
-					"name": "Get Semua Laporan (Filter & Sort)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/reports",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports"]
-						},
-						"description": "Mengambil semua daftar laporan fasilitas Desa Kepunduhan."
-					}
-				},
-				{
-					"name": "Get Detail Laporan by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/reports/#LAP-0412",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports", "#LAP-0412"]
-						},
-						"description": "Mengambil detail 1 laporan, riwayat timeline penanganan, serta komentar warga."
-					}
-				},
-				{
-					"name": "Buat Laporan Baru",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Gorong-gorong Mampet di Dusun Beringin\",\n  \"category\": \"irigasi\",\n  \"dusun\": \"Dusun Beringin (Krajan)\",\n  \"location\": \"Jl. Beringin No. 5 RT 02 / RW 01\",\n  \"description\": \"Aliran air tersumbat sampah ranting pohon bambu, air mulai meluap ke pekarangan rumah warga saat hujan lebat.\",\n  \"priority\": \"Sedang\",\n  \"reporterName\": \"Siti Rahmawati\",\n  \"reporterPhone\": \"0812-3456-7890\",\n  \"reporterNik\": \"3328012005010001\",\n  \"isAnonymous\": false,\n  \"coordinates\": {\n    \"lat\": -6.8796,\n    \"lng\": 109.1834\n  }\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/reports",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports"]
-						},
-						"description": "Mengirimkan formulir laporan warga baru."
-					}
-				},
-				{
-					"name": "Verifikasi & Disposisi Regu Petugas",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"action\": \"approved\",\n  \"team\": \"Regu Bina Marga (Jalan & Jembatan)\",\n  \"notes\": \"Material pasir uruk dan paving pengganti telah siap diangkut armada L300.\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/reports/#LAP-0412/dispatches",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports", "#LAP-0412", "dispatches"]
-						},
-						"description": "Admin desa memverifikasi tiket dan menugaskan regu lapangan."
-					}
-				},
-				{
-					"name": "Update Status / Edit Laporan",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"Selesai\",\n  \"notes\": \"Pemasangan paving telah tuntas 100% dan dapat dilintasi warga.\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/reports/#LAP-0412",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports", "#LAP-0412"]
-						},
-						"description": "Mengubah status tiket laporan (Diajukan, Ditinjau, Proses, Selesai, Ditolak)."
-					}
-				},
-				{
-					"name": "Upvote / Dukung Laporan",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/reports/#LAP-0412/upvotes",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports", "#LAP-0412", "upvotes"]
-						},
-						"description": "Memberikan dukungan suara (upvote) pada laporan agar diprioritaskan."
-					}
-				},
-				{
-					"name": "Tambah Komentar Warga",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"author\": \"Bambang Sutrisno\",\n  \"role\": \"Ketua Poktan\",\n  \"text\": \"Terima kasih tindak lanjut cepat dari aparat Desa Kepunduhan!\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/reports/#LAP-0412/comments",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "reports", "#LAP-0412", "comments"]
-						},
-						"description": "Menambahkan tanggapan/komentar publik pada laporan."
-					}
-				},
-				{
-					"name": "Statistik Ringkasan Laporan",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/reports/stats",
-							"host": ["{{base_url}}"],
-							"path": ["reports", "stats"]
-						},
-						"description": "Statistik total laporan, selesai, diproses, dan antrean."
-					}
-				}
-			]
-		},
-		{
-			"name": "3. Regu Lapangan (Teams)",
-			"item": [
-				{
-					"name": "Get Semua Regu Lapangan",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/teams",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "teams"]
-						},
-						"description": "Melihat daftar regu operasional lapangan (Bina Marga, Irigasi, PJU, Kebersihan)."
-					}
-				},
-				{
-					"name": "Update Status Operasional Regu (Petugas Lapangan)",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"Istirahat\",\n  \"currentLocation\": \"Posko Balai Desa Kepunduhan (Jl. Beringin No. 1)\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/v1/teams/team-bm",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "teams", "team-bm"]
-						},
-						"description": "Petugas lapangan memperbarui status kesiapan (Siaga, Bertugas, Istirahat)."
-					}
-				}
-			]
-		},
-		{
-			"name": "4. Catatan Harian & Kontak Darurat",
-			"item": [
-				{
-					"name": "Get Catatan Harian (Daily Notes)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/v1/daily-notes",
-							"host": ["{{base_url}}"],
-							"path": ["v1", "daily-notes"]
-						},
-						"description": "Melihat catatan operasional dan briefing harian perangkat desa."
-					}
-				},
-				{
-					"name": "Tambah Catatan Harian",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"author\": \"Budi Santoso\",\n  \"text\": \"Pembersihan material sisa perbaikan jalan di Dusun Beringin telah tuntas dilaporkan.\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/daily-notes",
-							"host": ["{{base_url}}"],
-							"path": ["daily-notes"]
-						},
-						"description": "Menambahkan catatan briefing operasional baru."
-					}
-				},
-				{
-					"name": "Get Kontak Darurat Desa",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/emergency-contacts",
-							"host": ["{{base_url}}"],
-							"path": ["emergency-contacts"]
-						},
-						"description": "Mendapatkan daftar kontak darurat (Posko Bencana, Polsek Kramat, Koramil Kramat, Ambulans Desa)."
-					}
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "a9b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Portal Pengaduan Desa Kepunduhan API",
+    "description": "Koleksi API Lengkap Sistem Informasi Pengaduan & Layanan Publik Desa Kepunduhan, Kec. Kramat, Kab. Tegal 52181.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Autentikasi & Akun Warga",
+      "item": [
+        {
+          "name": "Login Warga (NIK)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nik\": \"3328012005010001\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login warga menggunakan NIK dan password demo (Siti Rahmawati - RT 03 Dusun Beringin)."
+          }
+        },
+        {
+          "name": "Registrasi Warga Baru",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nik\": \"3328012005010099\",\n  \"name\": \"Tri Handoko\",\n  \"phone\": \"082133445566\",\n  \"dusun\": \"Dusun Kepunduhan Barat\",\n  \"rtRw\": \"RT 02 / RW 03\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Pendaftaran akun warga Desa Kepunduhan baru."
+          }
+        },
+        {
+          "name": "Profil Pengguna Aktif (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "me"
+              ]
+            },
+            "description": "Melihat identitas profil warga yang sedang login."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Keluar dari sesi portal warga."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Laporan Pengaduan (Reports)",
+      "item": [
+        {
+          "name": "Get Semua Laporan (Filter & Sort)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports"
+              ]
+            },
+            "description": "Mengambil semua daftar laporan fasilitas Desa Kepunduhan."
+          }
+        },
+        {
+          "name": "Get Detail Laporan by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412"
+              ]
+            },
+            "description": "Mengambil detail 1 laporan, riwayat timeline penanganan, serta komentar warga."
+          }
+        },
+        {
+          "name": "Buat Laporan Baru",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Gorong-gorong Mampet di Dusun Beringin\",\n  \"category\": \"irigasi\",\n  \"dusun\": \"Dusun Beringin (Krajan)\",\n  \"location\": \"Jl. Beringin No. 5 RT 02 / RW 01\",\n  \"description\": \"Aliran air tersumbat sampah ranting pohon bambu, air mulai meluap ke pekarangan rumah warga saat hujan lebat.\",\n  \"priority\": \"Sedang\",\n  \"reporterName\": \"Siti Rahmawati\",\n  \"reporterPhone\": \"0812-3456-7890\",\n  \"reporterNik\": \"3328012005010001\",\n  \"isAnonymous\": false,\n  \"coordinates\": {\n    \"lat\": -6.8796,\n    \"lng\": 109.1834\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports"
+              ]
+            },
+            "description": "Mengirimkan formulir laporan warga baru."
+          }
+        },
+        {
+          "name": "Verifikasi & Disposisi Regu Petugas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approved\",\n  \"team\": \"Regu Bina Marga (Jalan & Jembatan)\",\n  \"notes\": \"Material pasir uruk dan paving pengganti telah siap diangkut armada L300.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412/dispatches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412",
+                "dispatches"
+              ]
+            },
+            "description": "Admin desa memverifikasi tiket dan menugaskan regu lapangan."
+          }
+        },
+        {
+          "name": "Update Status / Edit Laporan",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Selesai\",\n  \"notes\": \"Pemasangan paving telah tuntas 100% dan dapat dilintasi warga.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412"
+              ]
+            },
+            "description": "Mengubah status tiket laporan (Diajukan, Ditinjau, Proses, Selesai, Ditolak)."
+          }
+        },
+        {
+          "name": "Upvote / Dukung Laporan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412/upvotes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412",
+                "upvotes"
+              ]
+            },
+            "description": "Memberikan dukungan suara (upvote) pada laporan agar diprioritaskan."
+          }
+        },
+        {
+          "name": "Tambah Komentar Warga",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author\": \"Bambang Sutrisno\",\n  \"role\": \"Ketua Poktan\",\n  \"text\": \"Terima kasih tindak lanjut cepat dari aparat Desa Kepunduhan!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412",
+                "comments"
+              ]
+            },
+            "description": "Menambahkan tanggapan/komentar publik pada laporan."
+          }
+        },
+        {
+          "name": "Statistik Ringkasan Laporan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "stats"
+              ]
+            },
+            "description": "Statistik total laporan, selesai, diproses, dan antrean."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Regu Lapangan (Teams)",
+      "item": [
+        {
+          "name": "Get Semua Regu Lapangan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/teams",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "teams"
+              ]
+            },
+            "description": "Melihat daftar regu operasional lapangan (Bina Marga, Irigasi, PJU, Kebersihan)."
+          }
+        },
+        {
+          "name": "Update Status Operasional Regu (Petugas Lapangan)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Istirahat\",\n  \"currentLocation\": \"Posko Balai Desa Kepunduhan (Jl. Beringin No. 1)\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/teams/team-bm",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "teams",
+                "team-bm"
+              ]
+            },
+            "description": "Petugas lapangan memperbarui status kesiapan (Siaga, Bertugas, Istirahat)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Catatan Harian & Kontak Darurat",
+      "item": [
+        {
+          "name": "Get Catatan Harian (Daily Notes)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/daily-notes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "daily-notes"
+              ]
+            },
+            "description": "Melihat catatan operasional dan briefing harian perangkat desa."
+          }
+        },
+        {
+          "name": "Tambah Catatan Harian",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author\": \"Budi Santoso\",\n  \"text\": \"Pembersihan material sisa perbaikan jalan di Dusun Beringin telah tuntas dilaporkan.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/daily-notes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "daily-notes"
+              ]
+            },
+            "description": "Menambahkan catatan briefing operasional baru."
+          }
+        },
+        {
+          "name": "Get Kontak Darurat Desa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/emergency-contacts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "emergency-contacts"
+              ]
+            },
+            "description": "Mendapatkan daftar kontak darurat (Posko Bencana, Polsek Kramat, Koramil Kramat, Ambulans Desa)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Integrasi API Eksternal & Geocoding Wilayah",
+      "item": [
+        {
+          "name": "GET Reverse Geocoding Lokasi Desa Kepunduhan (Nominatim Live)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/external/geocode?lat=-6.8797&lon=109.1835",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "external",
+                "geocode"
+              ],
+              "query": [
+                {
+                  "key": "lat",
+                  "value": "-6.8797",
+                  "description": "Latitude Desa Kepunduhan"
+                },
+                {
+                  "key": "lon",
+                  "value": "109.1835",
+                  "description": "Longitude Desa Kepunduhan"
+                }
+              ]
+            },
+            "description": "Mengambil detail alamat presisi (Kecamatan Kramat, Kabupaten Tegal) dari OpenStreetMap Nominatim secara realtime."
+          }
+        },
+        {
+          "name": "GET Reverse Geocoding Fallback Offline (Kab. Tegal)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/external/geocode?lat=-99.999&lon=99.999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "external",
+                "geocode"
+              ],
+              "query": [
+                {
+                  "key": "lat",
+                  "value": "-99.999",
+                  "description": "Koordinat uji fallback"
+                },
+                {
+                  "key": "lon",
+                  "value": "99.999",
+                  "description": "Koordinat uji fallback"
+                }
+              ]
+            },
+            "description": "Membuktikan fail-open / graceful fallback ke data geografis lokal Desa Kepunduhan saat internet tidak tersedia atau timeout."
+          }
+        },
+        {
+          "name": "GET Pencarian Wilayah & Kode Pos (Tegal)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/regions/search?q=Slawi",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "regions",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Slawi"
+                }
+              ]
+            },
+            "description": "Pencarian wilayah terintegrasi pihak ketiga dan fallback otomatis wilayah Kabupaten Tegal."
+          }
+        },
+        {
+          "name": "GET Daftar Provinsi Indonesia (Cached 60m)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/regions/provinces",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "regions",
+                "provinces"
+              ]
+            },
+            "description": "Mengambil master data provinsi dengan cache TTL 60 menit."
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Skenario Demo Presentasi (Sesuai Slide 19)",
+      "item": [
+        {
+          "name": "[Tiara] 1. GET Filter Aduan Dusun Beringin & Status Proses (200 OK)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reports?dusun=Beringin&status=Proses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports"
+              ],
+              "query": [
+                {
+                  "key": "dusun",
+                  "value": "Beringin"
+                },
+                {
+                  "key": "status",
+                  "value": "Proses"
+                }
+              ]
+            },
+            "description": "Mendemokan query filter multi-parameter laporan di Desa Kepunduhan."
+          }
+        },
+        {
+          "name": "[Siti Novia] 2. POST Aduan Warga Valid Dusun Krajan (201 Created + Location)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lampu PJU Padam Depan Balai Desa\",\n  \"category\": \"penerangan\",\n  \"location\": \"Jl. Raya Kepunduhan RT 02 / RW 01, Dusun Krajan\",\n  \"dusun\": \"Krajan\",\n  \"description\": \"Lampu penerangan jalan umum mati total sejak 3 malam terakhir, membahayakan warga yang lewat malam hari.\",\n  \"reporter_name\": \"Ahmad Subagyo\",\n  \"reporter_nik\": \"3328090102900001\",\n  \"reporter_phone\": \"081234567890\",\n  \"priority\": \"Sedang\",\n  \"coordinates\": {\n    \"lat\": -6.8797,\n    \"lng\": 109.1835\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports"
+              ]
+            },
+            "description": "Kirim aduan valid warga Desa Kepunduhan, menghasilkan status 201 Created dan header Location tiket aduan."
+          }
+        },
+        {
+          "name": "[Siti Furkotun] 3. POST Error Validasi - NIK Bukan 16 Digit (422 Unprocessable)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Aduan Tanpa Kategori dan NIK Salah\",\n  \"location\": \"Dusun Krajan\",\n  \"reporter_name\": \"Warga\",\n  \"reporter_nik\": \"12345\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports"
+              ]
+            },
+            "description": "Membuktikan Form Request Validation otomatis menolak NIK yang tidak 16 digit dan field wajib yang kosong dengan format seragam RFC 7807 (422)."
+          }
+        },
+        {
+          "name": "[Siti Furkotun] 4. GET Error Laporan Tidak Ditemukan (404 Not Found)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-9999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-9999"
+              ]
+            },
+            "description": "Membuktikan exception handler mengembalikan respon JSON seragam 404 Not Found saat ID tiket tidak ada."
+          }
+        },
+        {
+          "name": "[Siti Novia] 5. POST Error Aturan Bisnis - Tolak Disposisi Ganda (409 Conflict)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"team_id\": \"team-bm\",\n  \"officer_name\": \"Kaur Pelayanan Desa\",\n  \"instruction\": \"Tolong segera perbaiki jalan berlubang\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412/dispatches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412",
+                "dispatches"
+              ]
+            },
+            "description": "Membuktikan aturan bisnis: laporan yang sudah berstatus 'Proses' tidak boleh didisposisi ganda (409 Conflict)."
+          }
+        },
+        {
+          "name": "[Veri] 6. POST Disposisi Regu Lapangan DB::transaction (200 / 201 Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"team_id\": \"team-bm\",\n  \"officer_name\": \"Kaur Pelayanan Desa\",\n  \"instruction\": \"Kirim tim siaga perbaikan jalan berlubang\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0413/dispatches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0413",
+                "dispatches"
+              ]
+            },
+            "description": "Membuktikan operasi transaksional DB::transaction atomik saat laporan berstatus Menunggu dialihkan ke Proses dan dicatat ke tabel dispatches."
+          }
+        },
+        {
+          "name": "[Tiara] 7. GET Geocoding Lokasi Desa Kepunduhan (-6.8797, 109.1835)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/external/geocode?lat=-6.8797&lon=109.1835",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "external",
+                "geocode"
+              ],
+              "query": [
+                {
+                  "key": "lat",
+                  "value": "-6.8797"
+                },
+                {
+                  "key": "lon",
+                  "value": "109.1835"
+                }
+              ]
+            },
+            "description": "Membuktikan integrasi OpenStreetMap Nominatim live geocoding koordinat Desa Kepunduhan."
+          }
+        }
+      ]
+    }
+  ]
 }

@@ -90,6 +90,58 @@ Route::get('/regions/search', function (\Illuminate\Http\Request $request) {
     });
 });
 
+// Reverse Geocoding (OpenStreetMap Nominatim dengan Fallback Lokal Presisi Desa Kepunduhan)
+$reverseGeocodeHandler = function (\Illuminate\Http\Request $request) {
+    $lat = $request->query('lat', '-6.8797');
+    $lon = $request->query('lon', '109.1835');
+    $cacheKey = 'nominatim_rev_' . md5("{$lat}_{$lon}");
+
+    return \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function () use ($lat, $lon) {
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withHeaders([
+                    'User-Agent' => 'DesaKepunduhanWebService/1.1 (desa.kepunduhan@tegal.go.id)',
+                ])->get('https://nominatim.openstreetmap.org/reverse', [
+                    'lat' => $lat,
+                    'lon' => $lon,
+                    'format' => 'json',
+                ]);
+
+            if ($response->successful() && $response->json()) {
+                return [
+                    'status' => 'success',
+                    'source' => 'OpenStreetMap Nominatim Live API',
+                    'data' => $response->json(),
+                ];
+            }
+        } catch (\Exception $e) {
+            // Lanjut ke fallback
+        }
+
+        return [
+            'status' => 'fallback',
+            'source' => 'Local Geographic Registry (Desa Kepunduhan)',
+            'message' => 'Layanan eksternal offline/timeout, sistem beralih ke data fallback lokal presisi.',
+            'data' => [
+                'display_name' => 'Desa Kepunduhan, Kecamatan Kramat, Kabupaten Tegal, Jawa Tengah, 52181, Indonesia',
+                'village' => 'Kepunduhan',
+                'district' => 'Kecamatan Kramat',
+                'regency' => 'Kabupaten Tegal',
+                'state' => 'Jawa Tengah',
+                'postcode' => '52181',
+                'country' => 'Indonesia',
+                'coordinates' => [
+                    'lat' => $lat,
+                    'lon' => $lon,
+                ],
+            ],
+        ];
+    });
+};
+
+Route::get('/regions/reverse', $reverseGeocodeHandler);
+Route::get('/v1/external/geocode', $reverseGeocodeHandler);
+
 // ==========================================
 // REST API v1 (Sesuai Endpoint Matrix Tugas PDF)
 // ==========================================
