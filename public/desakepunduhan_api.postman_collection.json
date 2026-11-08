@@ -628,7 +628,7 @@
       ]
     },
     {
-      "name": "6. Skenario Demo Presentasi (Sesuai Slide 19)",
+      "name": "6. Skenario Demo Presentasi (Fitur Utama - Sesuai Slide 19)",
       "item": [
         {
           "name": "[Tiara] 1. GET Filter Aduan Dusun Beringin & Status Proses (200 OK)",
@@ -816,9 +816,9 @@
           }
         },
         {
-          "name": "[Tiara] 7. GET Geocoding Lokasi Desa Kepunduhan (-6.8797, 109.1835)",
+          "name": "[Tiara] 7. POST Upvote / Dukung Laporan Aduan (200 OK)",
           "request": {
-            "method": "GET",
+            "method": "POST",
             "header": [
               {
                 "key": "Accept",
@@ -826,27 +826,51 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/v1/external/geocode?lat=-6.8797&lon=109.1835",
+              "raw": "{{base_url}}/v1/reports/#LAP-0412/upvotes",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "v1",
-                "external",
-                "geocode"
-              ],
-              "query": [
-                {
-                  "key": "lat",
-                  "value": "-6.8797"
-                },
-                {
-                  "key": "lon",
-                  "value": "109.1835"
-                }
+                "reports",
+                "#LAP-0412",
+                "upvotes"
               ]
             },
-            "description": "Membuktikan integrasi OpenStreetMap Nominatim live geocoding koordinat Desa Kepunduhan."
+            "description": "Membuktikan partisipasi publik warga Desa Kepunduhan: memberikan upvote dukungan perbaikan jalan, jumlah upvotes bertambah secara realtime."
+          }
+        },
+        {
+          "name": "[Tiara] 8. POST Tambah Komentar Warga (201 Created)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author\": \"Budi Santoso (Warga RT 02)\",\n  \"role\": \"Warga\",\n  \"comment\": \"Mohon segera diperbaiki pak kades, jalan ini akses utama anak-anak berangkat ke SDN Kepunduhan.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/reports/#LAP-0412/comments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reports",
+                "#LAP-0412",
+                "comments"
+              ]
+            },
+            "description": "Menambahkan komentar warga pada laporan pengaduan."
           }
         }
       ]
